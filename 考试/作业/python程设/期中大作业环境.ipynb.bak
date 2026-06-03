@@ -1,0 +1,978 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 期中大作业"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "\n",
+    "<span style=\"color:red; font-weight:bold;\">请将作业文件（不要包含data目录）打包命名为 期中大作业+姓名+学号.zip, 例如 期中大作业+张三+1000000000.zip</span>\n",
+    "\n",
+    "<span style=\"color:red; font-weight:bold;\">在大作业过程中觉得有心得或者自己拓展学习到有价值内容的，愿意在大作业交流环节跟大家报告分享的，可以在压缩包文件名最后加一个#号。例如期中大作业+张三+1000000000+#.zip 。 报名大作业分享的同学需要在压缩包里包含作业代码、报告的同时，额外附加一份交流报告的ppt或pdf演示文件，长度在5-7页。内容专注大作业中用到的一个最有价值和心得的内容</span>\n",
+    "\n",
+    "特别提示：作业内容较多，建议灵活使用AI模型辅助方案设计与代码实现，也可以用AI辅助生成报告。但要求在能理解AI交互内容的基础上完成作业。建议选做项目最多选做2项。尽量做有心得和深入理解的，不要贪多。\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 第零部分 数据及基础环境\n",
+    "\n",
+    "这部分只是用来设置大作业用到的数据及基础环境，可以直接使用。如有必要也可以修改补充。"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "读入四个数据表，验证作业的数据环境。"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\"\"\"\n",
+    "数据集载入部分\n",
+    "\"\"\"\n",
+    "\n",
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    "import warnings\n",
+    "warnings.filterwarnings('ignore')\n",
+    "\n",
+    "# Reading ratings file\n",
+    "ratings = pd.read_csv('./data/ratings2.csv',  encoding='latin-1', usecols=['user_id', 'movie_id', 'rating', 'timestamp'])\n",
+    "\n",
+    "# Reading users file\n",
+    "users = pd.read_csv('./data/users.csv', encoding='latin-1', usecols=['user_id', 'gender', 'zipcode', 'age_desc', 'occ_desc'])\n",
+    "\n",
+    "# Reading movies file\n",
+    "movies = pd.read_csv('./data/movies.csv',  encoding='latin-1', usecols=['movie_id', 'title', 'genres'])\n",
+    "\n",
+    "# Reading movies info file\n",
+    "movies_info = pd.read_csv('./data/info.csv',  encoding='latin-1', usecols=['id', 'name', 'genre','intro','directors','starts', 'release_time'])\n",
+    "movies_info.rename(columns ={ 'id':'movie_id', 'starts': 'stars'}, inplace = True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>user_id</th>\n",
+       "      <th>movie_id</th>\n",
+       "      <th>rating</th>\n",
+       "      <th>timestamp</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>1</td>\n",
+       "      <td>1193</td>\n",
+       "      <td>5</td>\n",
+       "      <td>978300760</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>1</td>\n",
+       "      <td>661</td>\n",
+       "      <td>3</td>\n",
+       "      <td>978302109</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>1</td>\n",
+       "      <td>914</td>\n",
+       "      <td>3</td>\n",
+       "      <td>978301968</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>1</td>\n",
+       "      <td>3408</td>\n",
+       "      <td>4</td>\n",
+       "      <td>978300275</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>1</td>\n",
+       "      <td>2355</td>\n",
+       "      <td>5</td>\n",
+       "      <td>978824291</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>...</th>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1000204</th>\n",
+       "      <td>6040</td>\n",
+       "      <td>1091</td>\n",
+       "      <td>1</td>\n",
+       "      <td>956716541</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1000205</th>\n",
+       "      <td>6040</td>\n",
+       "      <td>1094</td>\n",
+       "      <td>5</td>\n",
+       "      <td>956704887</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1000206</th>\n",
+       "      <td>6040</td>\n",
+       "      <td>562</td>\n",
+       "      <td>5</td>\n",
+       "      <td>956704746</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1000207</th>\n",
+       "      <td>6040</td>\n",
+       "      <td>1096</td>\n",
+       "      <td>4</td>\n",
+       "      <td>956715648</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1000208</th>\n",
+       "      <td>6040</td>\n",
+       "      <td>1097</td>\n",
+       "      <td>4</td>\n",
+       "      <td>956715569</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>1000209 rows × 4 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "         user_id  movie_id  rating  timestamp\n",
+       "0              1      1193       5  978300760\n",
+       "1              1       661       3  978302109\n",
+       "2              1       914       3  978301968\n",
+       "3              1      3408       4  978300275\n",
+       "4              1      2355       5  978824291\n",
+       "...          ...       ...     ...        ...\n",
+       "1000204     6040      1091       1  956716541\n",
+       "1000205     6040      1094       5  956704887\n",
+       "1000206     6040       562       5  956704746\n",
+       "1000207     6040      1096       4  956715648\n",
+       "1000208     6040      1097       4  956715569\n",
+       "\n",
+       "[1000209 rows x 4 columns]"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "ratings"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>movie_id</th>\n",
+       "      <th>name</th>\n",
+       "      <th>genre</th>\n",
+       "      <th>release_time</th>\n",
+       "      <th>intro</th>\n",
+       "      <th>directors</th>\n",
+       "      <th>stars</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>1</td>\n",
+       "      <td>Toy Story (1995)</td>\n",
+       "      <td>Animation|Adventure|Comedy</td>\n",
+       "      <td>22 November 1995 (USA)</td>\n",
+       "      <td>A cowboy doll is profoundly threatened and jea...</td>\n",
+       "      <td>John Lasseter</td>\n",
+       "      <td>Tom Hanks|Tim Allen|Don Rickles</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2</td>\n",
+       "      <td>Jumanji (1995)</td>\n",
+       "      <td>Adventure|Comedy|Family</td>\n",
+       "      <td>15 December 1995 (USA)</td>\n",
+       "      <td>When two kids find and play a magical board ga...</td>\n",
+       "      <td>Joe Johnston</td>\n",
+       "      <td>Robin Williams|Kirsten Dunst|Bonnie Hunt</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>3</td>\n",
+       "      <td>Grumpier Old Men (1995)</td>\n",
+       "      <td>Comedy|Romance</td>\n",
+       "      <td>22 December 1995 (USA)</td>\n",
+       "      <td>John and Max resolve to save their beloved bai...</td>\n",
+       "      <td>Howard Deutch</td>\n",
+       "      <td>Walter Matthau|Jack Lemmon|Ann-Margret</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>4</td>\n",
+       "      <td>Waiting to Exhale (1995)</td>\n",
+       "      <td>Comedy|Drama|Romance</td>\n",
+       "      <td>22 December 1995 (USA)</td>\n",
+       "      <td>Based on Terry McMillan's novel, this film fol...</td>\n",
+       "      <td>Forest Whitaker</td>\n",
+       "      <td>Whitney Houston|Angela Bassett|Loretta Devine</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>5</td>\n",
+       "      <td>Father of the Bride Part II (1995)</td>\n",
+       "      <td>Comedy|Family|Romance</td>\n",
+       "      <td>8 December 1995 (USA)</td>\n",
+       "      <td>George Banks must deal not only with the pregn...</td>\n",
+       "      <td>Charles Shyer</td>\n",
+       "      <td>Steve Martin|Diane Keaton|Martin Short</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>...</th>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9737</th>\n",
+       "      <td>193581</td>\n",
+       "      <td>Kuroshitsuji: Book of the Atlantic (2017)</td>\n",
+       "      <td>Animation</td>\n",
+       "      <td>21 January 2017 (Japan)</td>\n",
+       "      <td>A young lord and his demon butler board a luxu...</td>\n",
+       "      <td>Noriyuki Abe|Stephen Hoff</td>\n",
+       "      <td>Bryn Apprill|Dawn Michelle Bennett|Justin Briner</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9738</th>\n",
+       "      <td>193583</td>\n",
+       "      <td>NÃ´gÃªmu nÃ´raifu: Zero (2017)</td>\n",
+       "      <td>Animation|Adventure|Comedy</td>\n",
+       "      <td>19 July 2019 (China)</td>\n",
+       "      <td>Adaption of the sixth Light Novel of series, i...</td>\n",
+       "      <td>Atsuko Ishizuka</td>\n",
+       "      <td>Alexandra Bedford|Jessica Boone|Ricardo Contreras</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9739</th>\n",
+       "      <td>193585</td>\n",
+       "      <td>Flint (2017)</td>\n",
+       "      <td>Drama</td>\n",
+       "      <td>TV Movie 28 October 2017</td>\n",
+       "      <td>A woman deals with the toxic water scandal in ...</td>\n",
+       "      <td>Bruce Beresford</td>\n",
+       "      <td>Marin Ireland|Betsy Brandt|Queen Latifah</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9740</th>\n",
+       "      <td>193587</td>\n",
+       "      <td>Bungou Stray Dogs: Dead Apple (2018)</td>\n",
+       "      <td>Animation</td>\n",
+       "      <td>3 March 2018 (Japan)</td>\n",
+       "      <td>Rivalry between groups of criminals and detect...</td>\n",
+       "      <td>Takuya Igarashi</td>\n",
+       "      <td>Brian Beacock|Ray Chase|Lucien Dodge</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9741</th>\n",
+       "      <td>193609</td>\n",
+       "      <td>Dice Rules (1991)</td>\n",
+       "      <td>Comedy|Documentary</td>\n",
+       "      <td>17 May 1991 (USA)</td>\n",
+       "      <td>Outrageous, misogynistic and vulgar-to-the-max...</td>\n",
+       "      <td>Jay Dubin</td>\n",
+       "      <td>Andrew Dice Clay|Eddie Griffin|Sylvia Harman</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>9742 rows × 7 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "      movie_id                                        name  \\\n",
+       "0            1                           Toy Story (1995)    \n",
+       "1            2                             Jumanji (1995)    \n",
+       "2            3                    Grumpier Old Men (1995)    \n",
+       "3            4                   Waiting to Exhale (1995)    \n",
+       "4            5         Father of the Bride Part II (1995)    \n",
+       "...        ...                                         ...   \n",
+       "9737    193581  Kuroshitsuji: Book of the Atlantic (2017)    \n",
+       "9738    193583             NÃ´gÃªmu nÃ´raifu: Zero (2017)    \n",
+       "9739    193585                               Flint (2017)    \n",
+       "9740    193587       Bungou Stray Dogs: Dead Apple (2018)    \n",
+       "9741    193609                          Dice Rules (1991)    \n",
+       "\n",
+       "                           genre              release_time  \\\n",
+       "0     Animation|Adventure|Comedy    22 November 1995 (USA)   \n",
+       "1        Adventure|Comedy|Family    15 December 1995 (USA)   \n",
+       "2                 Comedy|Romance    22 December 1995 (USA)   \n",
+       "3           Comedy|Drama|Romance    22 December 1995 (USA)   \n",
+       "4          Comedy|Family|Romance     8 December 1995 (USA)   \n",
+       "...                          ...                       ...   \n",
+       "9737                   Animation   21 January 2017 (Japan)   \n",
+       "9738  Animation|Adventure|Comedy      19 July 2019 (China)   \n",
+       "9739                       Drama  TV Movie 28 October 2017   \n",
+       "9740                   Animation      3 March 2018 (Japan)   \n",
+       "9741          Comedy|Documentary         17 May 1991 (USA)   \n",
+       "\n",
+       "                                                  intro  \\\n",
+       "0     A cowboy doll is profoundly threatened and jea...   \n",
+       "1     When two kids find and play a magical board ga...   \n",
+       "2     John and Max resolve to save their beloved bai...   \n",
+       "3     Based on Terry McMillan's novel, this film fol...   \n",
+       "4     George Banks must deal not only with the pregn...   \n",
+       "...                                                 ...   \n",
+       "9737  A young lord and his demon butler board a luxu...   \n",
+       "9738  Adaption of the sixth Light Novel of series, i...   \n",
+       "9739  A woman deals with the toxic water scandal in ...   \n",
+       "9740  Rivalry between groups of criminals and detect...   \n",
+       "9741  Outrageous, misogynistic and vulgar-to-the-max...   \n",
+       "\n",
+       "                      directors  \\\n",
+       "0                 John Lasseter   \n",
+       "1                  Joe Johnston   \n",
+       "2                 Howard Deutch   \n",
+       "3               Forest Whitaker   \n",
+       "4                 Charles Shyer   \n",
+       "...                         ...   \n",
+       "9737  Noriyuki Abe|Stephen Hoff   \n",
+       "9738            Atsuko Ishizuka   \n",
+       "9739            Bruce Beresford   \n",
+       "9740            Takuya Igarashi   \n",
+       "9741                  Jay Dubin   \n",
+       "\n",
+       "                                                  stars  \n",
+       "0                       Tom Hanks|Tim Allen|Don Rickles  \n",
+       "1              Robin Williams|Kirsten Dunst|Bonnie Hunt  \n",
+       "2                Walter Matthau|Jack Lemmon|Ann-Margret  \n",
+       "3         Whitney Houston|Angela Bassett|Loretta Devine  \n",
+       "4                Steve Martin|Diane Keaton|Martin Short  \n",
+       "...                                                 ...  \n",
+       "9737   Bryn Apprill|Dawn Michelle Bennett|Justin Briner  \n",
+       "9738  Alexandra Bedford|Jessica Boone|Ricardo Contreras  \n",
+       "9739           Marin Ireland|Betsy Brandt|Queen Latifah  \n",
+       "9740               Brian Beacock|Ray Chase|Lucien Dodge  \n",
+       "9741       Andrew Dice Clay|Eddie Griffin|Sylvia Harman  \n",
+       "\n",
+       "[9742 rows x 7 columns]"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "movies_info"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 第一部分 观影偏好挖掘分析"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 1.1 性别（或年龄）偏好分析"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### 核心算法或方案用1-2句话简述，也可以附加公式：\n",
+    "\n",
+    "性别偏好分析方案（如果做年龄偏好这里不填）：\n",
+    "\n",
+    "todo：\n",
+    "1.过滤掉评分过少的，找出男女评分差异最大的10部电影并画图分析\n",
+    "2.按类聚合查看男女评分差异\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "年龄偏好分析方案（如果做性别偏好这里不填）：\n",
+    "\n",
+    "todo：\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 偏好分析代码及运行结果 \n",
+    "# todo：\n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 分析结果可视化\n",
+    "# todo：\n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "选做1，年龄偏好之趋势分析：\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 1.2 特定电影类型偏好人群分析\n",
+    "\n",
+    "分析不同类型（genre）电影的最偏好 - 最不偏好职业人群。 关注 倾向于观看vs 倾向于不看，打分可以忽略或只做参考 （主要是为下一步要求做铺垫）"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "简述你的不同类型电影的最偏好 - 最不偏好职业人群方案。1-2句话描述，也可以附加公式\n",
+    "\n",
+    "todo："
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "# 电影的最偏好 - 最不偏好职业人群分析代码及结果可视化\n",
+    "# todo：\n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 1.3 计算不同职业间观影偏好的相似度，构建相似度网络并可视化。"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "职业相似度定义模型（方案）。可以文字间述或同时附加计算公式：\n",
+    "\n",
+    "todo：\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 相似度及图构建计算代码实现及运行结果与关系图可视化\n",
+    "# todo：\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 选做2：\n",
+    "# 关系网络社区发现与结果分析\n",
+    "# 结果分析：\n",
+    "\n",
+    "\n",
+    "# 社区发现代码及可视化，\n",
+    "# 代码实现：\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 第二部分 观影打分预测与优化"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 2.1 用rating表信息对观影评分进行预测"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "todo：\n",
+    "\n",
+    "简述你的算法思路：\n",
+    "\n",
+    "\n",
+    "封闭与开放测试（随机拆分5%评测数据）结果（只要求MSE）\n",
+    "\n",
+    "封闭测试结果：\n",
+    "\n",
+    "开放测试结果：\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 评分预测代码实现与评测实现\n",
+    "# todo：\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 2.2 利用user表的年龄-性别-职业信息以及电影的类型信息优化评分预测\n",
+    "\n",
+    "这里任选一个特征尝试实现方案即可，不需要利用所有特征，最求最优loss。主要是看方案的合理性与理解深度。可以直接利用前面步骤的结果。\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "todo：\n",
+    "\n",
+    "简述你选择的特征与模型思路：\n",
+    "\n",
+    "优化效果对比：\n",
+    "\n",
+    "选做3：分析引入的特征对哪些情况会有明显提升，以及是否会引入误差及误差消除方案\n",
+    "\n",
+    "特征（显著性）分析：\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 代码实现\n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 第三部分 根据movie_info表中的电影介绍（intro字段）和电影名称预测电影类型（genre标签）"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "– 拆分10%验证集、15%评测集。完成模型方案选择、参数选择、结果评测分析、特征分析\n",
+    "\n",
+    "考虑genre标签是不独立的，如何更设计合理的评价优化方案"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "todo：\n",
+    "\n",
+    "简述你的模型设计方案：\n",
+    "\n",
+    "评测方案简述：\n",
+    "\n",
+    "评测结果：\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 代码实现：\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 选做4，结果分析与优化（含分类关键词、词组的提取）\n",
+    "# 这里降低一点要求，分类关键词、词组的提取列为选做内容\n",
+    "# todo：\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 附件：调用DEEPSEEK API根据info字段内容对电影类型进行预测：\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 选做5 ：综合利用传统模型与大语言模型实现更好的类型预测\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "开始分析电影类型...\n",
+      "正在处理第 1/100 条记录...\n",
+      "正在处理第 11/100 条记录...\n",
+      "正在处理第 21/100 条记录...\n",
+      "正在处理第 31/100 条记录...\n",
+      "正在处理第 41/100 条记录...\n",
+      "正在处理第 51/100 条记录...\n",
+      "正在处理第 61/100 条记录...\n",
+      "正在处理第 71/100 条记录...\n",
+      "正在处理第 81/100 条记录...\n",
+      "正在处理第 91/100 条记录...\n",
+      "分析完成！\n",
+      "\n",
+      "前10条记录结果示例:\n",
+      "                                               intro  \\\n",
+      "0  A cowboy doll is profoundly threatened and jea...   \n",
+      "1  When two kids find and play a magical board ga...   \n",
+      "2  John and Max resolve to save their beloved bai...   \n",
+      "3  Based on Terry McMillan's novel, this film fol...   \n",
+      "4  George Banks must deal not only with the pregn...   \n",
+      "5  A group of professional bank robbers start to ...   \n",
+      "6  An ugly duckling having undergone a remarkable...   \n",
+      "7  Two best friends witness a murder and embark o...   \n",
+      "8  A former fireman takes on a group of terrorist...   \n",
+      "9  Years after a friend and fellow 00 agent is ki...   \n",
+      "\n",
+      "                         genre2  \n",
+      "0   Animation|Comedy|Children's  \n",
+      "1  Adventure|Fantasy|Children's  \n",
+      "2                Romance|Comedy  \n",
+      "3          Drama|Romance|Comedy  \n",
+      "4                  Comedy|Drama  \n",
+      "5         Crime|Thriller|Action  \n",
+      "6          Romance|Comedy|Drama  \n",
+      "7      Adventure|Crime|Thriller  \n",
+      "8         Action|Thriller|Drama  \n",
+      "9     Action|Thriller|Adventure  \n",
+      "\n",
+      "genre2字段统计:\n",
+      "有效预测数量: 100\n",
+      "空值数量: 0\n",
+      "\n",
+      "genre2预测样例:\n",
+      "0      Animation|Comedy|Children's\n",
+      "1     Adventure|Fantasy|Children's\n",
+      "2                   Romance|Comedy\n",
+      "3             Drama|Romance|Comedy\n",
+      "4                     Comedy|Drama\n",
+      "5            Crime|Thriller|Action\n",
+      "6             Romance|Comedy|Drama\n",
+      "7         Adventure|Crime|Thriller\n",
+      "8            Action|Thriller|Drama\n",
+      "9        Action|Thriller|Adventure\n",
+      "10            Romance|Drama|Comedy\n",
+      "11           Comedy|Horror|Fantasy\n",
+      "12        Adventure|Drama|Thriller\n",
+      "13                           Drama\n",
+      "14         Adventure|Action|Comedy\n",
+      "15            Crime|Thriller|Drama\n",
+      "16                   Romance|Drama\n",
+      "17           Drama|Mystery|Romance\n",
+      "18        Adventure|Comedy|Mystery\n",
+      "19            Crime|Thriller|Drama\n",
+      "Name: genre2, dtype: object\n"
+     ]
+    }
+   ],
+   "source": [
+    "import pandas as pd\n",
+    "import requests\n",
+    "import json\n",
+    "import time\n",
+    "\n",
+    "# 假设已有movies_info_copy表（前100条记录的副本）\n",
+    "\n",
+    "# DeepSeek API配置\n",
+    "API_KEY = \"sk-*****************\"  # 请替换为你的实际API Key\n",
+    "API_URL = \"https://api.deepseek.com/v1/chat/completions\"\n",
+    "\n",
+    "# 定义电影类型列表\n",
+    "GENRES = [\n",
+    "    \"Drama\", \"Comedy\", \"Action\", \"Thriller\", \"Romance\", \n",
+    "    \"Horror\", \"Adventure\", \"Sci-Fi\", \"Children's\", \"Crime\", \n",
+    "    \"War\", \"Documentary\", \"Musical\", \"Mystery\", \"Animation\", \n",
+    "    \"Fantasy\", \"Western\", \"Film-Noir\"\n",
+    "]\n",
+    "\n",
+    "def analyze_movie_genre(description):\n",
+    "    \"\"\"\n",
+    "    调用DeepSeek API分析电影简介，返回类型预测\n",
+    "    \"\"\"\n",
+    "    if pd.isna(description) or description == \"\":\n",
+    "        return \"\"\n",
+    "    \n",
+    "    prompt = f\"\"\"Analyze the following movie description and predict its genre(s). \n",
+    "Possible genres: {', '.join(GENRES)}\n",
+    "\n",
+    "Rules:\n",
+    "- Return 1-3 genres, sorted by likelihood from high to low\n",
+    "- Use '|' as separator\n",
+    "- Return ONLY the genres, no additional text or explanation\n",
+    "- Based ONLY on the description content\n",
+    "\n",
+    "Movie description: {description}\n",
+    "\n",
+    "Predicted genre(s):\"\"\"\n",
+    "\n",
+    "    headers = {\n",
+    "        \"Authorization\": f\"Bearer {API_KEY}\",\n",
+    "        \"Content-Type\": \"application/json\"\n",
+    "    }\n",
+    "    \n",
+    "    payload = {\n",
+    "        \"model\": \"deepseek-chat\",\n",
+    "        \"messages\": [\n",
+    "            {\"role\": \"user\", \"content\": prompt}\n",
+    "        ],\n",
+    "        \"temperature\": 0.1,  # 低温度使输出更确定\n",
+    "        \"max_tokens\": 50\n",
+    "    }\n",
+    "    \n",
+    "    try:\n",
+    "        response = requests.post(API_URL, headers=headers, json=payload, timeout=30)\n",
+    "        response.raise_for_status()\n",
+    "        result = response.json()\n",
+    "        genre_output = result['choices'][0]['message']['content'].strip()\n",
+    "        \n",
+    "        # 验证返回格式，确保只包含允许的类型\n",
+    "        predicted_genres = genre_output.split('|')\n",
+    "        valid_genres = [g.strip() for g in predicted_genres if g.strip() in GENRES]\n",
+    "        \n",
+    "        return '|'.join(valid_genres[:3]) if valid_genres else \"\"\n",
+    "        \n",
+    "    except Exception as e:\n",
+    "        print(f\"API调用错误: {e}\")\n",
+    "        return \"\"\n",
+    "\n",
+    "# 为前100条记录添加genre2字段\n",
+    "print(\"开始分析电影类型...\")\n",
+    "movies_info_copy['genre2'] = \"\"\n",
+    "\n",
+    "# 为了避免API限流，添加延迟\n",
+    "for idx, row in movies_info_copy.iterrows():\n",
+    "    description = row['intro']\n",
+    "    if idx % 10 == 0:\n",
+    "        print(f\"正在处理第 {idx+1}/100 条记录...\")\n",
+    "    \n",
+    "    genre_result = analyze_movie_genre(description)\n",
+    "    movies_info_copy.at[idx, 'genre2'] = genre_result\n",
+    "    \n",
+    "    time.sleep(0.5)  # 控制请求频率，避免超过API限制\n",
+    "\n",
+    "print(\"分析完成！\")\n",
+    "\n",
+    "# 查看结果示例\n",
+    "print(\"\\n前10条记录结果示例:\")\n",
+    "print(movies_info_copy[['intro', 'genre2']].head(10))\n",
+    "\n",
+    "# 统计结果分布\n",
+    "print(\"\\ngenre2字段统计:\")\n",
+    "print(f\"有效预测数量: {(movies_info_copy['genre2'] != '').sum()}\")\n",
+    "print(f\"空值数量: {(movies_info_copy['genre2'] == '').sum()}\")\n",
+    "\n",
+    "# 查看genre2的样例分布\n",
+    "print(\"\\ngenre2预测样例:\")\n",
+    "print(movies_info_copy[movies_info_copy['genre2'] != '']['genre2'].head(20))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\n",
+      "genre2预测样例:\n",
+      "                           genre                        genre2\n",
+      "0     Animation|Adventure|Comedy   Animation|Comedy|Children's\n",
+      "1        Adventure|Comedy|Family  Adventure|Fantasy|Children's\n",
+      "2                 Comedy|Romance                Romance|Comedy\n",
+      "3           Comedy|Drama|Romance          Drama|Romance|Comedy\n",
+      "4          Comedy|Family|Romance                  Comedy|Drama\n",
+      "...                          ...                           ...\n",
+      "9737                   Animation     Mystery|Fantasy|Adventure\n",
+      "9738  Animation|Adventure|Comedy      Fantasy|Adventure|Sci-Fi\n",
+      "9739                       Drama                         Drama\n",
+      "9740                   Animation         Action|Thriller|Crime\n",
+      "9741          Comedy|Documentary                        Comedy\n",
+      "\n",
+      "[9737 rows x 2 columns]\n"
+     ]
+    }
+   ],
+   "source": [
+    "# 查看genre2的样例分布\n",
+    "print(\"\\ngenre2预测样例:\")\n",
+    "print(movies_info_copy[movies_info_copy['genre2'] != ''][['genre' ,'genre2']])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "my__env",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.15"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

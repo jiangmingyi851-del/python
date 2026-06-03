@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<style>
+
+@page {
+    size: A4;
+    margin: 12mm 10mm 12mm 10mm;
+}
+body {
+    font-family: "Microsoft YaHei", "Noto Sans SC", "PingFang SC", sans-serif;
+    font-size: 9pt;
+    line-height: 1.35;
+    color: #1a1a1a;
+    max-width: 100%;
+    margin: 0 auto;
+}
+h1 { font-size: 16pt; border-bottom: 2px solid #2563eb; padding-bottom: 4px; margin-top: 0; }
+h2 { font-size: 12pt; color: #2563eb; border-bottom: 1px solid #cbd5e1; padding-bottom: 3px; margin-top: 14px; margin-bottom: 6px; page-break-after: avoid; }
+h3 { font-size: 10pt; margin-top: 8px; margin-bottom: 4px; }
+hr { border: none; border-top: 1px solid #e2e8f0; margin: 8px 0; }
+
+/* 代码块 */
+pre {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 5px 7px;
+    font-size: 7.8pt;
+    line-height: 1.3;
+    overflow-x: auto;
+    margin: 4px 0;
+    page-break-inside: avoid;
+}
+code {
+    font-family: "Cascadia Code", "Consolas", "Fira Code", monospace;
+    font-size: 7.8pt;
+}
+p > code, li > code, td > code {
+    background: #f1f5f9;
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-size: 8pt;
+}
+
+/* 表格（包括并列布局的 HTML table 和 Markdown table） */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 6px 0;
+    page-break-inside: avoid;
+}
+/* Markdown 生成的表格 */
+table:not([class]) th,
+table:not([class]) td {
+    border: 1px solid #cbd5e1;
+    padding: 3px 6px;
+    font-size: 8.5pt;
+    vertical-align: top;
+}
+table:not([class]) th {
+    background: #f1f5f9;
+    font-weight: 600;
+}
+/* 并列布局表格（HTML <table> 无 border） */
+table tr td {
+    vertical-align: top;
+    padding: 0 8px;
+}
+table tr td:first-child {
+    padding-left: 0;
+}
+table tr td:last-child {
+    padding-right: 0;
+}
+
+/* 并列布局中的代码块更紧凑 */
+td pre {
+    font-size: 7.5pt;
+}
+
+/* 目录表格特殊样式 */
+table:first-of-type td {
+    border: none;
+    padding: 2px 8px;
+    font-size: 8.5pt;
+}
+table:first-of-type a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+blockquote {
+    border-left: 3px solid #2563eb;
+    margin: 6px 0;
+    padding: 4px 10px;
+    background: #f8fafc;
+    font-size: 8.5pt;
+}
+strong { color: #1e40af; }
+a { color: #2563eb; text-decoration: none; }
+ul, ol { margin: 4px 0; padding-left: 20px; }
+li { margin: 1px 0; }
+p { margin: 4px 0; }
+
+/* Pygments 代码高亮 */
+.codehilite .k, .codehilite .kn, .codehilite .kd { color: #8959a8; font-weight: bold; }
+.codehilite .s, .codehilite .s1, .codehilite .s2 { color: #718c00; }
+.codehilite .n { color: #4271ae; }
+.codehilite .nf { color: #c82829; }
+.codehilite .nb { color: #f5871f; }
+.codehilite .c, .codehilite .c1, .codehilite .cm { color: #8e908c; font-style: italic; }
+.codehilite .mi, .codehilite .mf { color: #f5871f; }
+.codehilite .o, .codehilite .ow { color: #3e999f; }
+.codehilite .bp { color: #f5871f; }
+.codehilite .nn { color: #4271ae; }
+
+</style>
+</head>
+<body>
+<h1 id="cheat-sheet">数算期末 Cheat Sheet 补充</h1>
+<h2 id="dfs">DFS序（欧拉序）与时间戳</h2>
+<h3 id="_1">概念</h3>
+<p>DFS序（也叫欧拉序）是对树进行DFS遍历时，记录每个节点的<strong>进入时间 <code>tin[u]</code></strong> 和<strong>离开时间 <code>tout[u]</code></strong>。核心性质：</p>
+<ul>
+<li><strong>子树区间</strong>：节点u的整棵子树对应DFS序中的连续区间 <code>[tin[u], tout[u]]</code></li>
+<li><strong>祖先判定</strong>：u是v的祖先 ⟺ <code>tin[u] ≤ tin[v]</code> 且 <code>tout[u] ≥ tout[v]</code></li>
+<li><strong>子树修改</strong>：对u的子树整体加值 → 在DFS序数组上做区间修改 <code>[tin[u], tout[u]]</code></li>
+<li><strong>路径查询</strong>：配合LCA，可将树上路径问题转化为序列问题</li>
+</ul>
+<h3 id="1n2i2i1">满二叉树版（数组存储，节点编号1~n，左孩2i，右孩2i+1）</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_dfs_order</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;k层满二叉树，返回 tin 和 tout&quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">k</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">tin</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">tout</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">timer</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">dfs</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">timer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">tin</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">timer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)):</span>      <span class="c1"># 非叶节点</span>
+            <span class="n">dfs</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+            <span class="n">dfs</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">tout</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">timer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">dfs</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tin</span><span class="p">,</span> <span class="n">tout</span>
+</code></pre></div>
+
+<h3 id="_2">通用版（邻接表，任意树，迭代式防栈溢出）</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">dfs_order</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    graph: 邻接表 graph[u] = [v1, v2, ...]</span>
+<span class="sd">    返回 tin[], tout[]（1-indexed）</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tin</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">tout</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">timer</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">vis</span> <span class="o">=</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">stack</span> <span class="o">=</span> <span class="p">[(</span><span class="n">root</span><span class="p">,</span> <span class="kc">False</span><span class="p">)]</span>       <span class="c1"># (节点, 是否已展开子节点)</span>
+
+    <span class="k">while</span> <span class="n">stack</span><span class="p">:</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">expanded</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">expanded</span><span class="p">:</span>
+            <span class="n">timer</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">tout</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">timer</span>        <span class="c1"># 离开时间</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">vis</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+            <span class="k">continue</span>
+        <span class="n">vis</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">timer</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">tin</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">timer</span>             <span class="c1"># 进入时间</span>
+        <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>    <span class="c1"># 回溯时记录离开时间</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">vis</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span>
+                <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">tin</span><span class="p">,</span> <span class="n">tout</span>
+</code></pre></div>
+
+<h3 id="_3">递归版（更简洁，小规模适用）</h3>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">setrecursionlimit</span><span class="p">(</span><span class="mi">200000</span><span class="p">)</span>
+
+<span class="n">tin</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">tout</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">timer</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">dfs</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">timer</span>
+    <span class="n">timer</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">tin</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">timer</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="n">parent</span><span class="p">:</span>
+            <span class="n">dfs</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
+    <span class="n">timer</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">tout</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">timer</span>
+
+<span class="n">dfs</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="parentlca">带parent记录的版本（常配合LCA使用）</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">dfs_order_with_parent</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="n">tin</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">tout</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">depth</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">timer</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">stack</span> <span class="o">=</span> <span class="p">[(</span><span class="n">root</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>        <span class="c1"># (节点, 父, 深度)</span>
+
+    <span class="k">while</span> <span class="n">stack</span><span class="p">:</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">fa</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">tin</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>                 <span class="c1"># 已访问 → 记离开时间</span>
+            <span class="n">timer</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">tout</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">timer</span>
+            <span class="k">continue</span>
+        <span class="n">timer</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">tin</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">timer</span>
+        <span class="n">parent</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">fa</span>
+        <span class="n">depth</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span>
+        <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">fa</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>  <span class="c1"># 再次入栈记离开</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">graph</span><span class="p">[</span><span class="n">u</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="n">fa</span><span class="p">:</span>
+                <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">d</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">tin</span><span class="p">,</span> <span class="n">tout</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">depth</span>
+</code></pre></div>
+
+<h3 id="_4">典型应用</h3>
+<p><strong>应用1：判断祖先关系 O(1)</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">is_ancestor</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tin</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">tin</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="ow">and</span> <span class="n">tout</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">tout</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+</code></pre></div>
+
+<p><strong>应用2：子树求和（DFS序 + 树状数组）</strong></p>
+<p>将树拍平为DFS序后，"对u子树所有节点加val" = 对序列 <code>[tin[u], tout[u]]</code> 区间加val。</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 建树 + DFS序</span>
+<span class="n">tin</span><span class="p">,</span> <span class="n">tout</span> <span class="o">=</span> <span class="n">dfs_order</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># 树状数组维护DFS序数组</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+    <span class="k">while</span> <span class="n">idx</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="p">:</span>
+        <span class="n">tree</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+=</span> <span class="n">val</span><span class="p">;</span> <span class="n">idx</span> <span class="o">+=</span> <span class="n">idx</span> <span class="o">&amp;</span> <span class="o">-</span><span class="n">idx</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">query</span><span class="p">(</span><span class="n">idx</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">idx</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">tree</span><span class="p">[</span><span class="n">idx</span><span class="p">];</span> <span class="n">idx</span> <span class="o">-=</span> <span class="n">idx</span> <span class="o">&amp;</span> <span class="o">-</span><span class="n">idx</span>
+    <span class="k">return</span> <span class="n">s</span>
+
+<span class="c1"># 子树u整体加val</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">subtree_add</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+    <span class="n">update</span><span class="p">(</span><span class="n">tin</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">val</span><span class="p">)</span>
+    <span class="n">update</span><span class="p">(</span><span class="n">tout</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="n">val</span><span class="p">)</span>
+
+<span class="c1"># 查询节点v的当前值</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">point_query</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">query</span><span class="p">(</span><span class="n">tin</span><span class="p">[</span><span class="n">v</span><span class="p">])</span>
+</code></pre></div>
+
+<p><strong>应用3：子树内节点计数/查询</strong></p>
+<p>DFS序把子树映射为连续区间，可以用任何区间数据结构（前缀和、线段树、BIT）处理子树问题。</p>
+<p><strong>应用4：配合LCA处理路径</strong></p>
+<p>树上路径 u→v 可分解为 u→LCA 和 v→LCA 两段，每段在DFS序上用差分处理。</p>
+<hr />
+<h2 id="dfs-vs">DFS序 vs 前/中/后序 对比</h2>
+<table>
+<thead>
+<tr>
+<th>遍历方式</th>
+<th>记录时机</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>前序</td>
+<td>进入时记录</td>
+<td>建树（前序+中序→唯一树）</td>
+</tr>
+<tr>
+<td>后序</td>
+<td>离开时记录</td>
+<td>拓扑排序、SCC</td>
+</tr>
+<tr>
+<td>DFS序（欧拉序）</td>
+<td>进入+离开都记录</td>
+<td><strong>子树区间操作</strong>、祖先判定</td>
+</tr>
+</tbody>
+</table>
+<p><strong>关键区别</strong>：前序/后序只记一次（n个时间戳），DFS序记两次（2n个时间戳），额外的信息让你能确定<strong>子树边界</strong>。</p>
+<h1 id="_5">算法模板补充：高频缺失知识点</h1>
+<h2 id="1">1. 双指针 / 滑动窗口通用模板</h2>
+<p>双指针（Two Pointers）与滑动窗口（Sliding Window）常用于数组/字符串的子数组或子串问题，能够在 O(n) 时间内解决。</p>
+<h3 id="11">1.1 双指针（相向 / 同向）</h3>
+<p><strong>相向双指针</strong>：一般用于排序数组的两数之和、回文判断等。</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">two_sum_sorted</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">right</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">left</span><span class="p">]</span> <span class="o">+</span> <span class="n">nums</span><span class="p">[</span><span class="n">right</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">s</span> <span class="o">&lt;</span> <span class="n">target</span><span class="p">:</span>
+            <span class="n">left</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">right</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="p">[]</span>
+</code></pre></div>
+
+<p><strong>同向双指针（快慢指针）</strong>：用于链表环检测、移除重复元素等。</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">remove_duplicates</span><span class="p">(</span><span class="n">nums</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">nums</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="n">slow</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">fast</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">nums</span><span class="p">[</span><span class="n">fast</span><span class="p">]</span> <span class="o">!=</span> <span class="n">nums</span><span class="p">[</span><span class="n">slow</span><span class="p">]:</span>
+            <span class="n">slow</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">nums</span><span class="p">[</span><span class="n">slow</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">fast</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">slow</span> <span class="o">+</span> <span class="mi">1</span>
+</code></pre></div>
+
+<h3 id="12">1.2 滑动窗口（固定长度 / 可变长度）</h3>
+<p><strong>固定长度窗口</strong>：窗口长度固定为 <code>k</code>，维护窗口内信息（和、最大值等）。</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">fixed_window_sum</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="c1"># 长度为 k 的所有子数组的最大和</span>
+    <span class="n">window_sum</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">nums</span><span class="p">[:</span><span class="n">k</span><span class="p">])</span>
+    <span class="n">max_sum</span> <span class="o">=</span> <span class="n">window_sum</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)):</span>
+        <span class="n">window_sum</span> <span class="o">+=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">k</span><span class="p">]</span>
+        <span class="n">max_sum</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_sum</span><span class="p">,</span> <span class="n">window_sum</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">max_sum</span>
+</code></pre></div>
+
+<p><strong>可变长度窗口（求最小覆盖子串等）</strong>：右指针扩张，左指针收缩以维护条件。</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">min_window</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="c1"># 返回 s 中包含 t 所有字符的最短子串</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span><span class="p">,</span> <span class="n">defaultdict</span>
+    <span class="n">need</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">window</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">left</span> <span class="o">=</span> <span class="n">right</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">valid</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">start</span><span class="p">,</span> <span class="n">length</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="n">right</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">right</span><span class="p">]</span>
+        <span class="n">right</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">need</span><span class="p">:</span>
+            <span class="n">window</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">window</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">==</span> <span class="n">need</span><span class="p">[</span><span class="n">c</span><span class="p">]:</span>
+                <span class="n">valid</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># 收缩窗口</span>
+        <span class="k">while</span> <span class="n">valid</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">need</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">right</span> <span class="o">-</span> <span class="n">left</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">:</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="n">left</span>
+                <span class="n">length</span> <span class="o">=</span> <span class="n">right</span> <span class="o">-</span> <span class="n">left</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">left</span><span class="p">]</span>
+            <span class="n">left</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">need</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">window</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">==</span> <span class="n">need</span><span class="p">[</span><span class="n">d</span><span class="p">]:</span>
+                    <span class="n">valid</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="n">window</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">s</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span><span class="o">+</span><span class="n">length</span><span class="p">]</span> <span class="k">if</span> <span class="n">length</span> <span class="o">!=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+</code></pre></div>
+
+<hr />
+<h2 id="2-meet-in-the-middle">2. 折半搜索（Meet in the Middle）</h2>
+<p>当问题规模较大（如 n ≤ 40）但直接枚举 <code>2^n</code> 不可行时，可将集合分为两半，分别枚举后合并。</p>
+<p><strong>典型应用</strong>：子集和等于目标值的方案数、最大子集和不超过限制等。</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">meet_in_the_middle</span><span class="p">(</span><span class="n">nums</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="c1"># 求有多少子集的和等于 target（nums 长度最大 40）</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+    <span class="n">left</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[:</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="p">:]</span>
+
+    <span class="c1"># 枚举一半的所有子集和</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_sums</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+        <span class="n">sums</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">mask</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">m</span><span class="p">):</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">mask</span> <span class="o">&gt;&gt;</span> <span class="n">i</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">s</span> <span class="o">+=</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">sums</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sums</span>
+
+    <span class="n">left_sums</span> <span class="o">=</span> <span class="n">get_sums</span><span class="p">(</span><span class="n">left</span><span class="p">)</span>
+    <span class="n">right_sums</span> <span class="o">=</span> <span class="n">get_sums</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
+    <span class="n">right_sums</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">ls</span> <span class="ow">in</span> <span class="n">left_sums</span><span class="p">:</span>
+        <span class="n">need</span> <span class="o">=</span> <span class="n">target</span> <span class="o">-</span> <span class="n">ls</span>
+        <span class="c1"># 二分查找 need 在 right_sums 中的出现次数</span>
+        <span class="n">lo</span> <span class="o">=</span> <span class="n">bisect_left</span><span class="p">(</span><span class="n">right_sums</span><span class="p">,</span> <span class="n">need</span><span class="p">)</span>
+        <span class="n">hi</span> <span class="o">=</span> <span class="n">bisect_right</span><span class="p">(</span><span class="n">right_sums</span><span class="p">,</span> <span class="n">need</span><span class="p">)</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="p">(</span><span class="n">hi</span> <span class="o">-</span> <span class="n">lo</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">count</span>
+</code></pre></div>
+
+<blockquote>
+<p><strong>优化</strong>：使用 <code>bisect</code> 模块加速；若需要输出具体方案，可额外记录掩码组合。</p>
+</blockquote>
+<hr />
+<h2 id="3-bfs">3. 状态压缩 BFS</h2>
+<p>普通 BFS 处理状态时，若状态可以用位掩码表示（如某些格子是否走过、开关状态等），可使用状态压缩 BFS。常用于最短路径 + 状态约束（如钥匙和门、网格变形）。</p>
+<p><strong>经典问题</strong>：迷宫中有钥匙（a~f）和门（A~F），求从起点到终点的最少步数。</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">shortest_path_with_keys</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    grid: List[str], 包含 &#39;S&#39; 起点, &#39;E&#39; 终点, &#39;.&#39; 空地, &#39;#&#39; 墙,</span>
+<span class="sd">          &#39;a&#39;-&#39;f&#39; 钥匙, &#39;A&#39;-&#39;F&#39; 门</span>
+<span class="sd">    返回最少步数，无法到达返回 -1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">R</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1"># 找到起点</span>
+    <span class="n">sr</span> <span class="o">=</span> <span class="n">sc</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">R</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">C</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span>
+                <span class="n">sr</span><span class="p">,</span> <span class="n">sc</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">sr</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="c1"># 状态 (r, c, keys) keys 为位掩码，第0位表示钥匙 &#39;a&#39;</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="p">(</span><span class="n">sr</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="p">{</span><span class="n">start</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="n">start</span><span class="p">])</span>
+    <span class="n">dirs</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+
+    <span class="k">while</span> <span class="n">q</span><span class="p">:</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">keys</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">grid</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">c</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">dist</span><span class="p">[(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">keys</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">dr</span><span class="p">,</span> <span class="n">dc</span> <span class="ow">in</span> <span class="n">dirs</span><span class="p">:</span>
+            <span class="n">nr</span><span class="p">,</span> <span class="n">nc</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">dr</span><span class="p">,</span> <span class="n">c</span> <span class="o">+</span> <span class="n">dc</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">nr</span> <span class="o">&lt;</span> <span class="n">R</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">nc</span> <span class="o">&lt;</span> <span class="n">C</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">nr</span><span class="p">][</span><span class="n">nc</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">cell</span> <span class="o">==</span> <span class="s1">&#39;#&#39;</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="c1"># 遇到门：检查是否有对应钥匙</span>
+            <span class="k">if</span> <span class="s1">&#39;A&#39;</span> <span class="o">&lt;=</span> <span class="n">cell</span> <span class="o">&lt;=</span> <span class="s1">&#39;F&#39;</span><span class="p">:</span>
+                <span class="n">key_needed</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">))</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">keys</span> <span class="o">&amp;</span> <span class="n">key_needed</span><span class="p">):</span>
+                    <span class="k">continue</span>
+            <span class="n">new_keys</span> <span class="o">=</span> <span class="n">keys</span>
+            <span class="c1"># 捡钥匙</span>
+            <span class="k">if</span> <span class="s1">&#39;a&#39;</span> <span class="o">&lt;=</span> <span class="n">cell</span> <span class="o">&lt;=</span> <span class="s1">&#39;f&#39;</span><span class="p">:</span>
+                <span class="n">new_keys</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)))</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="p">(</span><span class="n">nr</span><span class="p">,</span> <span class="n">nc</span><span class="p">,</span> <span class="n">new_keys</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">state</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dist</span><span class="p">:</span>
+                <span class="n">dist</span><span class="p">[</span><span class="n">state</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">keys</span><span class="p">)]</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">q</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+</code></pre></div>
+
+<blockquote>
+<p><strong>注意</strong>：钥匙种类不超过 6 时（2^6=64 种状态），内存和时间均可接受。</p>
+</blockquote>
+<hr />
+<h2 id="4">4. 数论基础（质因数分解、约数枚举、筛法）</h2>
+<h3 id="41">4.1 质因数分解（试除法）</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">prime_factors</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;返回 n 的质因数分解字典 {质因子: 指数}&quot;&quot;&quot;</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">n</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">factors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">factors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">n</span> <span class="o">//=</span> <span class="n">i</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="mi">2</span>  <span class="c1"># 可优化跳过偶数</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">factors</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">factors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">factors</span>
+</code></pre></div>
+
+<h3 id="42">4.2 枚举所有约数</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_divisors</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;返回 n 的所有正约数（未排序）&quot;&quot;&quot;</span>
+    <span class="n">divisors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">divisors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">i</span><span class="p">:</span>
+                <span class="n">divisors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span> <span class="o">//</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">divisors</span>  <span class="c1"># 可排序：sorted(divisors)</span>
+</code></pre></div>
+
+<h3 id="43">4.3 筛法（埃氏筛 / 欧拉筛）</h3>
+<p><strong>埃拉托斯特尼筛法</strong>（求 [1, n] 内所有素数）：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sieve_eratosthenes</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">is_prime</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">is_prime</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_prime</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_prime</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+                <span class="n">is_prime</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">primes</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">is_prime</span><span class="p">)</span> <span class="k">if</span> <span class="n">val</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">primes</span>
+</code></pre></div>
+
+<p><strong>欧拉筛（线性筛）</strong>：每个合数只被最小质因子筛一次，复杂度 O(n)。</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sieve_linear</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">primes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">is_prime</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_prime</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">primes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">primes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">*</span> <span class="n">p</span> <span class="o">&gt;</span> <span class="n">n</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">is_prime</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">break</span>
+    <span class="k">return</span> <span class="n">primes</span>
+</code></pre></div>
+
+<hr />
+<h2 id="5-lazy-deletion-heap">5. 懒删除堆（Lazy Deletion Heap）</h2>
+<p>需要支持删除任意元素（非堆顶）的堆结构，通常用优先队列配合延迟删除字典实现。</p>
+<p><strong>应用场景</strong>：动态求中位数、滑动窗口最大/最小值（但后者更推荐单调队列）、多路归并中的元素淘汰等。</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">heapq</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">LazyHeap</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">heap</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deleted</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># 记录待删除元素及其数量</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">heap</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_lazy_remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;清理堆顶已被标记删除的元素&quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">heap</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">heap</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">deleted</span><span class="p">:</span>
+            <span class="n">top</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">heap</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">deleted</span><span class="p">[</span><span class="n">top</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">deleted</span><span class="p">[</span><span class="n">top</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">deleted</span><span class="p">[</span><span class="n">top</span><span class="p">]</span>
+            <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">heap</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lazy_remove</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">heap</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">heap</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;pop from empty heap&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;标记删除某个值（不要求 val 一定在堆中）&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deleted</span><span class="p">[</span><span class="n">val</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deleted</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">-=</span> <span class="mi">1</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">top</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lazy_remove</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">heap</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">heap</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
+</code></pre></div>
+
+<p><strong>使用示例</strong>（动态维护窗口内的元素，支持移除任意元素）：</p>
+<div class="codehilite"><pre><span></span><code><span class="n">heap</span> <span class="o">=</span> <span class="n">LazyHeap</span><span class="p">()</span>
+<span class="n">heap</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">heap</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">heap</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">heap</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">heap</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span>  <span class="c1"># 5</span>
+<span class="n">heap</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">heap</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span>  <span class="c1"># 2</span>
+</code></pre></div>
+
+<hr />
+<h2 id="6-dp">6. 树上背包 DP（树形依赖背包）</h2>
+<p>在树上做分组背包，通常用于「选择若干节点，满足父子依赖关系，使得总价值最大/最小」的问题。常见于「有依赖的背包问题」和「树形 DP + 体积限制」。</p>
+<p><strong>经典问题</strong>：给定一棵树，每个节点有重量 w[i] 和价值 v[i]，若选择某个节点，则必须选择其父节点。在总重量不超过容量的情况下，求最大价值。</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">tree_knapsack</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">capacity</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    edges: List[(parent, child)]，默认 0 为根节点</span>
+<span class="sd">    w: List[int] 每个节点的重量（体积）</span>
+<span class="sd">    v: List[int] 每个节点的价值</span>
+<span class="sd">    capacity: 背包容量</span>
+<span class="sd">    返回最大价值（根节点必选时）</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">par</span><span class="p">,</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+        <span class="n">g</span><span class="p">[</span><span class="n">par</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
+
+    <span class="c1"># 返回 dp 数组，dp[j] 表示以当前节点为根的子树内，体积为 j 时能获得的最大价值</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dfs</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+        <span class="c1"># 初始化：必须选 u 自己</span>
+        <span class="n">dp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">capacity</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">w</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">capacity</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">dp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">u</span><span class="p">]</span>  <span class="c1"># 自己必须选</span>
+
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">g</span><span class="p">[</span><span class="n">u</span><span class="p">]:</span>
+            <span class="n">child_dp</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>  <span class="c1"># 子树的dp</span>
+            <span class="c1"># 分组背包：遍历当前已合并的容量，再遍历子树的容量（倒序防止重复）</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">capacity</span><span class="p">,</span> <span class="n">w</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">capacity</span> <span class="o">-</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">j</span> <span class="o">+</span> <span class="n">k</span> <span class="o">&lt;=</span> <span class="n">capacity</span><span class="p">:</span>
+                        <span class="n">dp</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="n">k</span><span class="p">],</span> <span class="n">dp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">child_dp</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">dp</span>
+
+    <span class="n">root_dp</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">root_dp</span><span class="p">)</span>  <span class="c1"># 返回不超过容量的最大价值</span>
+</code></pre></div>
+
+<blockquote>
+<p><strong>注意</strong>：如果根节点不必须选，可以引入一个虚拟根节点 0，重量和价值均为 0，且与所有原本的根相连。</p>
+</blockquote>
+<p><strong>纯 0-1 背包</strong>（非树上）也作为补充：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">zero_one_knapsack</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">capacity</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+    <span class="n">dp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">capacity</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">capacity</span><span class="p">,</span> <span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">dp</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">dp</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">+</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">capacity</span><span class="p">]</span>
+</code></pre></div>
+</body>
+</html>

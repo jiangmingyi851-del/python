@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>期末大作业汇报 — 蒋名仪</title>
+<!-- === FONTS === -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..500;1,6..72,400..500&family=Hanken+Grotesk:wght@400;600;700&family=DM+Mono:wght@400;500&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+<!-- === KATEX (formula rendering) === -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false});"></script>
+<style>
+/* === CSS CUSTOM PROPERTIES === */
+:root {
+    --paper: #F0EBDE;
+    --paper-2: #E6E0CE;
+    --ink: #1F2BE0;
+    --ink-soft: #5560E5;
+    --ink-faint: rgba(31,43,224,0.18);
+    --grid: rgba(31,43,224,0.10);
+    --stage-bg: var(--paper);
+    --slide-bg: var(--paper);
+    --font-display: 'Newsreader', 'Noto Serif SC', Georgia, serif;
+    --font-body: 'Hanken Grotesk', 'Noto Serif SC', sans-serif;
+    --font-mono: 'DM Mono', ui-monospace, monospace;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ===========================================
+   FIXED 16:9 STAGE: MANDATORY BASE STYLES (viewport-base.css)
+   =========================================== */
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: var(--stage-bg, #000); }
+.deck-viewport { position: fixed; inset: 0; overflow: hidden; background: var(--stage-bg, #000); }
+.deck-stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; transform-origin: 0 0; background: var(--slide-bg, #fff); }
+.slide { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; display: block; visibility: hidden; opacity: 0; pointer-events: none; background: var(--slide-bg, #fff); }
+.slide.active, .slide.visible { visibility: visible; opacity: 1; pointer-events: auto; z-index: 1; }
+img, video, canvas, svg { max-width: 100%; max-height: 100%; }
+.deck-controls { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 1000; }
+@media print {
+    html, body { width: 1920px; height: auto; overflow: visible; background: #fff; }
+    .deck-viewport { position: static; overflow: visible; background: #fff; }
+    .deck-stage { position: static; width: auto; height: auto; transform: none !important; background: none; }
+    .slide { position: relative; display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; width: 1920px; height: 1080px; break-after: page; page-break-after: always; }
+    .slide:last-child { break-after: auto; page-break-after: auto; }
+    .deck-controls { display: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+}
+
+/* === GRAPH PAPER GRID (permanent, every slide) === */
+.slide::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: linear-gradient(to right, var(--grid) 1px, transparent 1px),
+                      linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none; z-index: 0;
+}
+
+/* === COBALT HAIRLINES (top + bottom frame, every slide) === */
+.slide .hairline-top { position: absolute; left: 80px; right: 80px; top: 28px; border-top: 1.5px solid var(--ink); pointer-events: none; z-index: 0; }
+.slide .hairline-bot { position: absolute; left: 80px; right: 80px; bottom: 24px; border-bottom: 1.5px solid var(--ink); pointer-events: none; z-index: 0; }
+
+/* === PAGE NUMBER === */
+.pagenum { position: absolute; right: 80px; bottom: 46px; font-family: var(--font-mono); font-size: 16px; color: var(--ink); letter-spacing: 0.06em; z-index: 2; }
+
+/* === TOPBAR (section header with cobalt rule) === */
+.topbar { position: absolute; top: 52px; left: 80px; right: 80px; display: flex; align-items: baseline; gap: 16px; padding-bottom: 16px; border-bottom: 1.5px solid var(--ink); z-index: 1; }
+.topbar .tag { font-family: var(--font-mono); font-size: 20px; color: var(--ink); letter-spacing: 0.06em; flex-shrink: 0; }
+.topbar .title { font-family: var(--font-display); font-size: 50px; font-weight: 400; color: var(--ink); letter-spacing: -0.005em; line-height: 1.1; flex: 1; }
+.topbar .label { font-family: var(--font-body); font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.16em; color: var(--ink); flex-shrink: 0; }
+
+/* === CONTENT AREA === */
+.content { position: absolute; top: 130px; left: 100px; right: 100px; bottom: 70px; z-index: 1; display: flex; flex-direction: column; justify-content: center; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
+.text-fig { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+
+/* === TYPOGRAPHY (enlarged for readability) === */
+.sec-h { font-family: var(--font-body); font-size: 18px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.16em; color: var(--ink); margin-top: 26px; margin-bottom: 10px; }
+.sec-h:first-child { margin-top: 0; }
+.body-text { font-family: var(--font-body); font-size: 26px; font-weight: 400; line-height: 1.65; color: var(--ink); }
+.body-sub { font-family: var(--font-body); font-size: 24px; font-weight: 400; line-height: 1.6; color: var(--ink); opacity: 0.6; }
+.key-result { font-family: var(--font-body); font-size: 28px; font-weight: 700; line-height: 1.5; color: var(--ink); margin: 6px 0; }
+.note-text { font-family: var(--font-body); font-size: 22px; line-height: 1.5; color: var(--ink); opacity: 0.45; }
+
+/* === FORMULA BOX (KaTeX rendered inside) === */
+.formula-box { background: rgba(31,43,224,0.05); padding: 20px 32px; margin: 14px 0; font-size: 30px; line-height: 1.9; color: var(--ink); }
+.formula-note { font-family: var(--font-body); font-size: 22px; line-height: 1.55; color: var(--ink); opacity: 0.55; margin: 4px 0 8px 0; }
+
+/* === FIGURE PANEL === */
+.fig-panel { display: flex; flex-direction: column; justify-content: flex-start; gap: 12px; }
+.fig-panel img { width: 100%; height: auto; border: 1px solid var(--ink-faint); object-fit: contain; }
+.fig-caption { font-family: var(--font-mono); font-size: 16px; color: var(--ink); opacity: 0.4; letter-spacing: 0.06em; }
+
+/* === TABLE === */
+.overview-table { width: 100%; border-collapse: collapse; }
+.overview-table th { font-family: var(--font-body); font-size: 17px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.16em; color: var(--ink); text-align: left; padding: 14px 12px; border-bottom: 1.5px solid var(--ink); }
+.overview-table td { font-family: var(--font-body); font-size: 24px; color: var(--ink); padding: 14px 12px; border-bottom: 1px solid var(--ink-faint); vertical-align: top; }
+.overview-table td:first-child { font-family: var(--font-mono); font-size: 22px; font-weight: 500; letter-spacing: 0.04em; width: 80px; }
+.overview-table td:last-child { font-family: var(--font-mono); font-size: 17px; letter-spacing: 0.04em; opacity: 0.5; width: 110px; }
+
+/* === ANIMATIONS === */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo); }
+.slide.visible .reveal { opacity: 1; transform: translateY(0); }
+.slide.visible .reveal:nth-child(1) { transition-delay: 0.08s; }
+.slide.visible .reveal:nth-child(2) { transition-delay: 0.16s; }
+.slide.visible .reveal:nth-child(3) { transition-delay: 0.24s; }
+.slide.visible .reveal:nth-child(4) { transition-delay: 0.32s; }
+
+/* === PIXEL GLITCH DECO === */
+.glitch-col { position: absolute; z-index: 1; display: flex; flex-direction: column; gap: 3px; pointer-events: none; }
+.glitch-col span { display: block; background: var(--ink); opacity: 0.09; }
+
+/* === COVER === */
+.cover-content { position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: center; height: 100%; padding: 100px 140px; }
+
+/* === INLINE EDITING === */
+.edit-hotzone { position: fixed; top: 0; left: 0; width: 80px; height: 80px; z-index: 10000; cursor: pointer; }
+.edit-toggle { position: fixed; top: 16px; left: 16px; font-size: 18px; background: var(--paper); border: 1.5px solid var(--ink); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; z-index: 10001; cursor: pointer; }
+.edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
+[contenteditable="true"] { outline: 1.5px dashed var(--ink-soft); outline-offset: 2px; }
+
+/* === PROGRESS BAR === */
+.progress-bar { position: fixed; bottom: 0; left: 0; height: 3px; background: var(--ink); z-index: 999; transition: width 0.3s ease; }
+
+/* === KATEX OVERRIDES === */
+.katex { font-size: 1.25em; color: var(--ink); }
+.formula-box .katex { font-size: 1.3em; }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<main class="deck-stage" id="deckStage">
+
+<!-- ========== SLIDE 1: COVER ========== -->
+<section class="slide active">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="cover-content">
+    <div class="reveal" style="font-family:var(--font-body);font-size:15px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink);margin-bottom:40px;">FINAL PROJECT REPORT · 2026</div>
+    <h1 class="reveal" style="font-family:var(--font-display);font-size:152px;font-weight:400;line-height:0.95;color:var(--ink);letter-spacing:-0.008em;margin-bottom:28px;">期末大作业汇报</h1>
+    <p class="reveal" style="font-family:var(--font-display);font-size:32px;font-weight:400;line-height:1.6;color:var(--ink);opacity:0.55;max-width:1100px;margin-bottom:56px;">电影推荐系统 · 评分预测的优化与深化<br>+ 电影类型预测的深化</p>
+    <div class="reveal" style="width:120px;height:1.5px;background:var(--ink);margin-bottom:24px;"></div>
+    <div class="reveal" style="font-family:var(--font-mono);font-size:18px;color:var(--ink);letter-spacing:0.06em;">蒋名仪 &nbsp;|&nbsp; 2500010771</div>
+</div>
+<div class="glitch-col" style="right:80px;top:80px;bottom:80px;" aria-hidden="true">
+    <span style="width:14px;height:60px;margin-left:0"></span><span style="width:14px;height:32px;margin-left:18px"></span>
+    <span style="width:14px;height:72px;margin-left:6px"></span><span style="width:14px;height:20px;margin-left:24px"></span>
+    <span style="width:14px;height:48px;margin-left:10px"></span><span style="width:14px;height:56px;margin-left:0"></span>
+    <span style="width:14px;height:28px;margin-left:14px"></span><span style="width:14px;height:64px;margin-left:4px"></span>
+    <span style="width:14px;height:36px;margin-left:20px"></span><span style="width:14px;height:44px;margin-left:8px"></span>
+</div>
+<div class="pagenum">01 / 23</div>
+</section>
+
+<!-- ========== SLIDE 2: 总览 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="title">期末新增任务一览</span><span class="label">Overview</span></div>
+<div class="content">
+    <table class="overview-table reveal">
+        <thead><tr><th>编号</th><th>任务</th><th>方法</th><th>标签</th></tr></thead>
+        <tbody>
+            <tr><td>2.3</td><td>海报视觉特征增强评分预测</td><td>ResNet-50 → PCA → VisSVD</td><td>必做1a</td></tr>
+            <tr><td>2.4</td><td>LLM 背景知识增强评分预测</td><td>DeepSeek + MiniLM → LightGBM 残差</td><td>必做1b</td></tr>
+            <tr><td>2.5</td><td>传统 SVD 与新方案对比 + Stacking</td><td>4 专家 × 4 场景 + Ridge 元学习器</td><td>必做1c</td></tr>
+            <tr><td>2.6</td><td>SVD 异常用户分析 + 画像 + 定向优化</td><td>残差阈值 → KMeans → 专家切换</td><td>必做2a</td></tr>
+            <tr><td>2.7</td><td>复杂模型：多专家 MOE</td><td>Gating MLP + softmax 动态路由</td><td>可选3</td></tr>
+            <tr><td>3.1</td><td>MiniLM + 微调层预测电影类型</td><td>frozen MiniLM → Linear / MLP 头</td><td>必做T2</td></tr>
+            <tr><td>3.2</td><td>主题电影类 × 年龄相关性</td><td>LDA 主题 → 年龄区分度</td><td>可选B1</td></tr>
+            <tr><td>3.3</td><td>LLM Embedding + 微调预测类型</td><td>text-embedding-3-small → MLP-256</td><td>可选B2</td></tr>
+        </tbody>
+    </table>
+    <p class="note-text reveal" style="margin-top:20px;">期中基线（仅作对照）：M2 加性偏置 \(\hat{r}=\mu+b_u+b_i\)；M3 FunkSVD 加潜因子 \(\mathbf{p}_u^T\mathbf{q}_i\)；M2+ 叠加类型/人口学偏置。</p>
+</div>
+<div class="pagenum">02 / 23</div>
+</section>
+
+<!-- ========== SLIDE 3: 2.3 海报视觉 — 为什么 + 公式 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">2.3</span><span class="title">海报视觉：为什么需要图像信息？</span><span class="label">Visual Side-Info</span></div>
+<div class="content">
+    <div class="two-col">
+        <div>
+            <div class="sec-h reveal">核心问题</div>
+            <p class="body-text reveal">协同过滤只看"谁给哪部电影打了几分"，完全忽略电影的视觉风格。然而海报的色调、构图、人物排布是稳定的风格信号。</p>
+            <p class="body-text reveal" style="margin-top:12px;">对于<strong>几乎没人评分的冷门电影</strong>，协同过滤的潜因子 \(\mathbf{q}_i\) 根本学不到——评分太少。但海报特征始终可用。</p>
+            <div class="sec-h reveal">解决思路</div>
+            <p class="body-text reveal">把海报视觉向量 \(\tilde{\mathbf{v}}_i\) 注入 SVD：即使 \(\mathbf{q}_i\) 学不动，\(W\tilde{\mathbf{v}}_i\) 仍提供非零信号，缓解冷启动。</p>
+        </div>
+        <div>
+            <div class="sec-h reveal">M6 VisSVD 公式</div>
+            <div class="formula-box reveal">
+                $$\hat{r}_{ui} = \mu + b_u + b_i + \mathbf{p}_u^T\!\left(\mathbf{q}_i + W\tilde{\mathbf{v}}_i\right)$$
+            </div>
+            <p class="formula-note reveal">\(\tilde{\mathbf{v}}_i\)：海报经 ResNet-50 提取 512 维特征后 PCA 降至 64 维</p>
+            <p class="formula-note reveal">\(W\)：可学习的视觉→潜空间投影矩阵</p>
+            <p class="formula-note reveal">\(\mathbf{q}_i\)：自由潜因子（协同）；冷门电影 \(\mathbf{q}_i \approx 0\) 时 \(W\tilde{\mathbf{v}}_i\) 兜底</p>
+            <div class="sec-h reveal">实现流程</div>
+            <p class="body-sub reveal">Step 1 &nbsp; ResNet-50 抽 512 维海报特征 → 缓存</p>
+            <p class="body-sub reveal">Step 2 &nbsp; PCA 降到 64 维去噪；余弦相似度建 Visual Item-KNN (M5)</p>
+            <p class="body-sub reveal">Step 3 &nbsp; 将 \(\tilde{\mathbf{v}}_i\) 注入 FunkSVD，联合训练 \(W\) (M6)</p>
+            <p class="body-sub reveal">Step 4 &nbsp; 按电影流行度分桶，单独考察冷门电影增益</p>
+        </div>
+    </div>
+</div>
+<div class="pagenum">03 / 23</div>
+</section>
+
+<!-- ========== SLIDE 4: 2.3 海报视觉 — 结果 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">2.3</span><span class="title">视觉特征结果：冷门电影增益最明显</span><span class="label">Results</span></div>
+<div class="content">
+    <div class="text-fig">
+        <div>
+            <div class="sec-h reveal">全量开放测试集 MSE</div>
+            <p class="key-result reveal">M3 FunkSVD = 0.7144（训练充分的基座）</p>
+            <p class="body-sub reveal">M5 Visual-KNN = 1.3373（纯视觉，无协同，较差）</p>
+            <p class="key-result reveal">M6 VisSVD = 0.7184（协同 + 视觉）</p>
+            <div class="sec-h reveal">为什么全量 MSE 提升不大？</div>
+            <p class="body-text reveal">视觉 side-info 只在冷门电影（评分 &lt; 100 条）上 RMSE 降低明显。但冷门电影仅占测试集 0.6%，加权到全量后被严重稀释。</p>
+            <p class="body-text reveal" style="margin-top:12px;">热门电影的协同信号已经足够强，额外的视觉信号边际贡献被稀释。</p>
+            <div class="sec-h reveal">结论</div>
+            <p class="key-result reveal">→ 典型的 "side-info 只在稀疏区域有效"</p>
+            <p class="body-sub reveal">这是结构性的，不是方法写错了。视觉特征的价值在于缓解冷启动，而非提升全量精度。</p>
+        </div>
+        <div class="fig-panel">
+            <img src="figures/2_3_cold_movie.png" alt="冷门电影视觉增益" class="reveal">
+            <span class="fig-caption reveal">Fig 2.3 — 按电影流行度分桶的 RMSE 对比</span>
+        </div>
+    </div>
+</div>
+<div class="pagenum">04 / 23</div>
+</section>
+
+<!-- ========== SLIDE 5: 2.4 LLM 背景知识 — 思路 + 公式 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">2.4</span><span class="title">LLM 背景知识：用"世界知识"补充协同</span><span class="label">Content Residual</span></div>
+<div class="content">
+    <div class="two-col">
+        <div>
+            <div class="sec-h reveal">核心问题</div>
+            <p class="body-text reveal">ratings 表只有行为信号——谁打了几分。缺少电影的"世界知识"：口碑评价、主题风格、奖项、情绪基调。</p>
+            <p class="body-text reveal" style="margin-top:12px;">这些信息恰好存在于 LLM 的训练语料和文本语义中。</p>
+            <div class="sec-h reveal">双路径设计</div>
+            <p class="body-text reveal"><strong>路径 A — 在线 LLM：</strong>DeepSeek API 返回 online_rating / themes / award_level / sentiment，结构化为数值特征。</p>
+            <p class="body-text reveal"><strong>路径 B — 本地 MiniLM：</strong>把 name + intro + 导演 + 主演编码成 384 维语义向量，作为 API 不可用时的 fallback。</p>
+        </div>
+        <div>
+            <div class="sec-h reveal">M7 内容残差模型公式</div>
+            <div class="formula-box reveal">
+                $$\hat{r}_{ui} = \hat{r}_{ui}^{\,M2+} + g_\theta(c_i,\, u_u)$$
+            </div>
+            <p class="formula-note reveal">\(c_i\)：电影内容特征（LLM 知识 \(\oplus\) MiniLM 句向量）</p>
+            <p class="formula-note reveal">\(u_u\)：用户人口学特征（年龄、性别、职业）</p>
+            <p class="formula-note reveal">\(g_\theta\)：LightGBM 学习"基线 M2+ 没拟合到的残差"</p>
+            <p class="formula-note reveal">LightGBM 自动捕捉交叉项（如"学生 × Comedy"）</p>
+            <div class="sec-h reveal">为什么用残差而非直接预测？</div>
+            <p class="body-text reveal">协同基线 M2+ 已经拟合了大部分评分模式。内容特征只需要学<strong>基线遗漏的部分</strong>，避免从头拟合，降低过拟合风险。</p>
+        </div>
+    </div>
+</div>
+<div class="pagenum">05 / 23</div>
+</section>
+
+<!-- ========== SLIDE 6: 2.4 LLM — 结果 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">2.4</span><span class="title">LLM 内容残差：结果与启示</span><span class="label">Results</span></div>
+<div class="content">
+    <div class="text-fig">
+        <div>
+            <div class="sec-h reveal">关键结果</div>
+            <p class="key-result reveal">M7 内容残差 (LightGBM) 开放 MSE = 0.8149</p>
+            <p class="body-sub reveal">对比：M3 FunkSVD = 0.7144（训练充分的纯协同）</p>
+            <div class="sec-h reveal">特征重要性分析</div>
+            <p class="body-text reveal">\(\hat{r}^{M2+}\)（协同基线预测值）占绝对主导地位。occ / age / 内容向量 \(c^*\) 有一定补充贡献，但远不如协同信号。</p>
+            <div class="sec-h reveal">为什么 M7 没有超过 M3？</div>
+            <p class="body-text reveal">基座 M3 训练充分后 MSE = 0.714，已经从行为信号中提取了绝大部分可预测信息。外部内容知识是<strong>补充而非主力</strong>。</p>
+            <p class="body-text reveal" style="margin-top:10px;">这说明在该数据集上，用户评分行为本身已经足够强——LLM 知识的价值更多在冷启动和内容理解场景。</p>
+        </div>
+        <div class="fig-panel">
+            <img src="figures/2_4_feature_importance.png" alt="特征重要性" class="reveal">
+            <span class="fig-caption reveal">Fig 2.4 — LightGBM 特征重要性排序</span>
+        </div>
+    </div>
+</div>
+<div class="pagenum">06 / 23</div>
+</section>
+
+<!-- ========== SLIDE 7: 2.5 Stacking — 公式 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">2.5</span><span class="title">Stacking：如何协同四个专家？</span><span class="label">Stacking</span></div>
+<div class="content">
+    <div class="two-col">
+        <div>
+            <div class="sec-h reveal">核心问题</div>
+            <p class="body-text reveal">四个专家（M3 协同、M2+ 偏置、M6 视觉、M7 内容）各有所长，但<strong>单看全量 MSE 看不出差异</strong>——因为在不同场景（冷门/热门/稀有 genre）下优势不同。</p>
+            <div class="sec-h reveal">解决思路</div>
+            <p class="body-text reveal">Stacking 元学习：用一个 Ridge 回归器学一组<strong>全局权重 \(\boldsymbol{\alpha}\)</strong>，把四个专家的预测线性组合。</p>
+            <div class="sec-h reveal">Stacking 公式</div>
+            <div class="formula-box reveal">
+                $$\hat{r}^{\text{Stack}} = \alpha_0 + \boldsymbol{\alpha}^T \mathbf{z}$$
+                $$\mathbf{z} = (\hat{r}^{M3},\ \hat{r}^{M2+},\ \hat{r}^{M6},\ \hat{r}^{M7})$$
+            </div>
+            <div class="formula-box reveal">
+                $$\boldsymbol{\alpha} = \arg\min_{\alpha}\; \|\mathbf{y} - \alpha_0\mathbf{1} - Z\boldsymbol{\alpha}\|^2 + \lambda\|\boldsymbol{\alpha}\|^2$$
+            </div>
+            <p class="formula-note reveal">\(\mathbf{z}\)：四模型预测拼成的 4 维向量；\(\boldsymbol{\alpha}\)：Ridge 学到的权重</p>
+            <p class="formula-note reveal">防泄漏：用训练集再切一折 meta-val 学 \(\boldsymbol{\alpha}\)，不碰测试集</p>
+        </div>
+        <div>
+            <div class="sec-h reveal">场景分桶实测（基座训练充分后）</div>
+            <p class="body-text reveal"><strong>冷门电影</strong> → M6 VisSVD 略优（视觉兜底）</p>
+            <p class="body-text reveal"><strong>稀有 genre / 热门头部</strong> → M3 最优（协同最强）</p>
+            <p class="body-text reveal"><strong>M2+ / M7</strong>（人口学/内容）全场景被压制</p>
+            <div class="sec-h reveal" style="margin-top:28px;">为什么外部信息被压制？</div>
+            <p class="body-text reveal">基座 M3 训练充分后，行为协同信号已经足够强。人口学和内容特征提供的信息<strong>与协同高度冗余</strong>（M3 与 M6 预测相关性 0.98），难以带来额外增益。</p>
+        </div>
+    </div>
+</div>
+<div class="pagenum">07 / 23</div>
+</section>
+
+<!-- ========== SLIDE 8: 2.5 Stacking — 结果 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">2.5</span><span class="title">Stacking 结果：强相关专家集成增益有限</span><span class="label">Results</span></div>
+<div class="content">
+    <div class="text-fig">
+        <div>
+            <div class="sec-h reveal">关键数值</div>
+            <p class="key-result reveal">M3 FunkSVD（单模型） = 0.7144</p>
+            <p class="body-sub reveal">Stacking（4 专家线性组合） = 0.7386</p>
+            <p class="body-sub reveal">SegmentBlend（分场景最优混合） = 0.7132</p>
+            <div class="sec-h reveal">Stacking 权重揭示了什么？</div>
+            <p class="body-text reveal">Ridge 学到的权重：M3 = 1.86, M2+ = −0.849, M6 = −0.277, M7 = 0.282</p>
+            <p class="body-text reveal" style="margin-top:10px;">M3 权重远超其他 → 元学习器几乎只信 M3。M2+ 甚至是负权重（被 M3 压制后，反而引入噪声）。</p>
+            <div class="sec-h reveal">结论</div>
+            <p class="key-result reveal">全局 Stacking 反而略差于 M3 单模型</p>
+            <p class="body-text reveal">原因：当专家之间高度相关时（相关性 0.98），线性组合容易 meta 过拟合。集成要有真增益，专家必须"错在不同地方"。</p>
+            <p class="note-text reveal">→ 见反思页：集成要"去相关"才有效</p>
+        </div>
+        <div class="fig-panel">
+            <img src="figures/2_5_stacking.png" alt="Stacking 场景对比" class="reveal">
+            <span class="fig-caption reveal">Fig 2.5 — 4 专家 × 4 场景 MSE 对比</span>
+        </div>
+    </div>
+</div>
+<div class="pagenum">08 / 23</div>
+</section>
+
+<!-- ========== SLIDE 9: 2.6① 异常定义 + 画像 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">2.6 ①</span><span class="title">异常用户：如何定义？画像是什么？</span><span class="label">Anomaly Profile</span></div>
+<div class="content">
+    <div class="text-fig">
+        <div>
+            <div class="sec-h reveal">异常定义（残差阈值法）</div>
+            <div class="formula-box reveal">
+                $$e_{ui} = r_{ui} - \hat{r}_{ui}^{M3},\quad \text{异常样本} \Leftrightarrow |e_{ui}| > 1.5$$
+            </div>
+            <div class="formula-box reveal">
+                $$\text{异常用户} = \text{评分数}\geq 30\text{的用户中},\;\overline{|e_u|}\;\text{排名前 5\%}$$
+            </div>
+            <p class="formula-note reveal">\(e_{ui}\)：M3 预测残差；\(\overline{|e_u|}\)：用户级平均绝对残差</p>
+            <p class="key-result reveal">异常样本 ≈ 4.57%；异常用户 = 260 人</p>
+            <div class="sec-h reveal">为什么这些人"异常"？</div>
+            <p class="body-sub reveal">评分习惯个性化（过严/过松/口味偏窄），全局 M3 难以拟合 → 残差被放大。</p>
+        </div>
+        <div>
+            <div class="fig-panel">
+                <img src="figures/2_6_profile.png" alt="异常用户画像" class="reveal">
+                <span class="fig-caption reveal">Fig 2.6a — 职业/年龄/题材分布</span>
+            </div>
+            <div class="sec-h reveal">真实画像</div>
+            <p class="body-text reveal"><strong>职业：</strong>学生 + 教育工作者 32%（全体仅 25%）→ 偏高</p>
+            <p class="body-text reveal"><strong>年龄：</strong>横跨 18-24 / 25-34 / 35-44，非单一年龄段</p>
+            <p class="body-text reveal"><strong>题材：</strong>Comedy 各簇均居首，Romance 在爱情片簇突出</p>
+        </div>
+    </div>
+</div>
+<div class="pagenum">09 / 23</div>
+</section>
+
+<!-- ========== SLIDE 10: 2.6② 聚类 + 专家切换 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">2.6 ②</span><span class="title">聚类画像 + 切换专家：谁该信谁？</span><span class="label">Cluster × Expert</span></div>
+<div class="content">
+    <div class="text-fig">
+        <div>
+            <div class="sec-h reveal">KMeans 聚类（行为特征）</div>
+            <p class="body-sub reveal">特征：评分均值/方差、高分%/低分%、题材熵、偏好年代</p>
+            <p class="body-text reveal" style="margin-top:10px;"><strong>4 个异常用户簇：</strong></p>
+            <p class="body-sub reveal">C0 / C1 中庸高残差型 — 均分中等，评分模式多样</p>
+            <p class="body-sub reveal">C2 低分严苛型 — 均分低，低分比例高</p>
+            <p class="body-sub reveal">C3 高分宽松型 — 均分高，高分比例高</p>
+        </div>
+        <div>
+            <div class="fig-panel">
+                <img src="figures/2_6_clusters.png" alt="聚类结果" class="reveal">
+                <span class="fig-caption reveal">Fig 2.6b — 聚类可视化 &amp; 各专家异常 MSE</span>
+            </div>
+            <div class="sec-h reveal">异常用户上谁最准？</div>
+            <p class="body-text reveal">M3 = 1.346 &nbsp;|&nbsp; M6 VisSVD = <strong>1.342（最优）</strong></p>
+            <p class="body-text reveal">M2+ = 1.510 &nbsp;|&nbsp; M7 LLM = 1.490（远差于 M3/M6）</p>
+            <div class="sec-h reveal">启示</div>
+            <p class="key-result reveal">异常用户误差 ≈ 正常用户的 2 倍</p>
+            <p class="body-sub reveal">M2+/M7 反而更差 → 异常源于个人潜在口味，潜因子+视觉最贴合</p>
+        </div>
+    </div>
+</div>
+<div class="pagenum">10 / 23</div>
+</section>
+
+<!-- ========== SLIDE 11: 2.6③ 定向优化 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">2.6 ③</span><span class="title">异常用户定向优化：效果与反思</span><span class="label">Targeted Calibration</span></div>
+<div class="content">
+    <div class="text-fig">
+        <div>
+            <div class="sec-h reveal">思路：不动正常用户，只校准异常用户</div>
+            <div class="sec-h reveal">方法一：重估用户偏置</div>
+            <div class="formula-box reveal">
+                $$b_u^* = \frac{\displaystyle\sum_{i \in I(u)}\left(r_{ui} - \mu - b_i\right)}{|I(u)| + \lambda_u}$$
+            </div>
+            <p class="formula-note reveal">固定 \(b_i\)，只用用户自己的残差收缩估计 \(b_u^*\)</p>
+            <div class="sec-h reveal">方法二：簇专属专家融合</div>
+            <div class="formula-box reveal">
+                $$\hat{r}_{ui} = \sum_k w_{g(u),k}\;\hat{r}_{ui}^{(k)},\quad \mathbf{w}_g = \mathrm{softmax}\!\left(-\frac{\mathrm{MSE}_g}{\tau}\right)$$
+            </div>
+            <p class="formula-note reveal">\(g(u)\)：用户所属簇；按各专家在该簇的误差学权重</p>
+        </div>
+        <div>
+            <div class="fig-panel">
+                <img src="figures/2_6_abnormal_optimization.png" alt="定向优化效果" class="reveal">
+                <span class="fig-caption reveal">Fig 2.6c — 异常用户定向优化效果</span>
+            </div>
+            <div class="sec-h reveal">结果</div>
+            <p class="key-result reveal">异常用户 MSE：1.342 → 1.344（基本持平）</p>
+            <p class="body-text reveal">基座训练充分后，异常用户误差已是<strong>不可约噪声</strong>，后处理无效。</p>
+            <p class="body-text reveal">价值在于"识别 + 分流"，而非强行校准。</p>
+        </div>
+    </div>
+</div>
+<div class="pagenum">11 / 23</div>
+</section>
+
+<!-- ========== SLIDE 12: 2.7 MOE 公式 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">2.7</span><span class="title">MOE：按样本动态选专家</span><span class="label">Mixture of Experts</span></div>
+<div class="content">
+    <div class="two-col">
+        <div>
+            <div class="sec-h reveal">核心问题</div>
+            <p class="body-text reveal">Stacking 给<strong>所有样本同一组权重</strong>。但 2.5/2.6 已经显示：不同场景、不同用户，该信的专家不同。</p>
+            <p class="body-text reveal" style="margin-top:12px;">能不能让模型<strong>自动看当前样本属于哪种场景</strong>，动态分配权重？</p>
+            <div class="sec-h reveal">MOE 公式</div>
+            <div class="formula-box reveal">
+                $$\hat{r}_{ui} = \sum_k \pi_k(\mathbf{x}_{ui};\theta)\;\hat{r}_{ui}^{(k)},\quad \sum_k \pi_k = 1$$
+            </div>
+            <div class="formula-box reveal">
+                $$\boldsymbol{\pi} = \mathrm{softmax}\!\left(W_2\;\mathrm{ReLU}(W_1\mathbf{x} + b_1) + b_2\right)$$
+            </div>
+            <p class="formula-note reveal">\(\pi_k\)：第 \(k\) 个专家的 softmax 权重（样本级动态）</p>
+            <p class="formula-note reveal">\(\mathbf{x}_{ui}\)：上下文特征；专家参数固定，只训练 gating 网络</p>
+        </div>
+        <div>
+            <div class="sec-h reveal">与 Stacking 的关键区别</div>
+            <p class="body-text reveal"><strong>Stacking</strong> = 全局固定权重 \(\boldsymbol{\alpha}\)（一组权重用于所有样本）</p>
+            <p class="body-text reveal"><strong>MOE</strong> = 按样本动态权重 \(\boldsymbol{\pi}(\mathbf{x})\)（软路由）</p>
+            <div class="sec-h reveal">Router 输入特征</div>
+            <p class="body-text reveal">用户评分数 / 均值 / 方差</p>
+            <p class="body-text reveal">电影热度、冷启动标志、稀有 genre 标志</p>
+            <p class="body-text reveal">异常用户簇 one-hot</p>
+            <p class="body-sub reveal" style="margin-top:10px;">→ 让路由"知道"当前样本属于哪种场景，自动选最合适的专家。</p>
+        </div>
+    </div>
+</div>
+<div class="pagenum">12 / 23</div>
+</section>
+
+<!-- ========== SLIDE 13: 2.7 MOE 结果 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">2.7</span><span class="title">MOE 结果：为什么 MOE ≈ M3？</span><span class="label">Results</span></div>
+<div class="content">
+    <div class="text-fig">
+        <div>
+            <div class="sec-h reveal">关键结果</div>
+            <p class="key-result reveal">MOE 开放 MSE = 0.7143</p>
+            <p class="body-sub reveal">（4 experts：M3 / M2+ / M6 / M7）</p>
+            <p class="body-sub reveal">对比 M3 = 0.7144 — 几乎相同</p>
+            <div class="sec-h reveal">路由权重分析</div>
+            <p class="body-text reveal">M3/M6 训练充分后全面占优，<strong>router 收敛到几乎只用 M3</strong>（权重 ≈ 0.99）。</p>
+            <p class="body-text reveal" style="margin-top:12px;">这不是 MOE 的失败——恰恰是 MOE 的正确行为：当某专家在所有场景都更优时，理性的路由器<strong>自动归一到它</strong>。</p>
+            <div class="sec-h reveal">结论</div>
+            <p class="key-result reveal">MOE 的动态路由比 Stacking 的固定权重更合理</p>
+            <p class="body-text reveal">但在"一家独大"的专家格局下，动态路由没有发挥空间。要让 MOE 有真增益，需要专家之间能力更互补。</p>
+        </div>
+        <div class="fig-panel">
+            <img src="figures/2_7_moe_compare.png" alt="MOE 路由权重" class="reveal">
+            <span class="fig-caption reveal">Fig 2.7 — MOE 各场景路由权重分布</span>
+        </div>
+    </div>
+</div>
+<div class="pagenum">13 / 23</div>
+</section>
+
+<!-- ========== SLIDE 14: 3.1 MiniLM — 思路 + 公式 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">3.1</span><span class="title">MiniLM 语义替代 TF-IDF 预测电影类型</span><span class="label">Genre Prediction</span></div>
+<div class="content">
+    <div class="two-col">
+        <div>
+            <div class="sec-h reveal">核心问题</div>
+            <p class="body-text reveal">期中用 TF-IDF 词袋做类型预测，丢了<strong>词序与上下文语义</strong>（如反讽、隐喻）。改用预训练 transformer 的语义表示。</p>
+            <div class="sec-h reveal">为什么用冻结 encoder + 浅头？</div>
+            <p class="body-text reveal">数据仅 ~2k 部电影。全微调 transformer 容易过拟合。<strong>冻结 MiniLM-L6</strong>（22M 参数，6 层）抽 384 维句向量，只训练一个浅分类头，参数量少且训练快。</p>
+        </div>
+        <div>
+            <div class="sec-h reveal">公式</div>
+            <div class="formula-box reveal">
+                $$\mathbf{z}_i = \text{MiniLM}(\text{intro}_i) \in \mathbb{R}^{384}$$
+            </div>
+            <div class="formula-box reveal">
+                $$F\text{（线性头）}: \hat{y} = \sigma(W\mathbf{z}_i + b)$$
+            </div>
+            <div class="formula-box reveal">
+                $$G\text{（MLP 头）}: \hat{y} = \sigma\!\left(W_2\;\text{ReLU}(W_1\mathbf{z}_i) + b\right)$$
+            </div>
+            <p class="formula-note reveal">\(\sigma\)：sigmoid（逐 genre 独立输出 0/1）</p>
+            <p class="formula-note reveal">损失函数：BCEWithLogitsLoss（多标签二分类）</p>
+            <div class="sec-h reveal">评测指标（多标签）</div>
+            <p class="body-sub reveal">Hamming loss · Jaccard · F1-macro · F1-samples · Subset accuracy</p>
+        </div>
+    </div>
+</div>
+<div class="pagenum">14 / 23</div>
+</section>
+
+<!-- ========== SLIDE 15: 3.1 结果 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">3.1</span><span class="title">MiniLM 结果：语义表示稳定提升</span><span class="label">Results</span></div>
+<div class="content">
+    <div class="text-fig">
+        <div>
+            <div class="sec-h reveal">横向对比</div>
+            <p class="body-sub reveal">B &nbsp; LR-OVR (TF-IDF)：F1-samples = 0.4751</p>
+            <p class="body-sub reveal">F &nbsp; MiniLM + Linear 头：F1-samples = 0.5054</p>
+            <p class="key-result reveal">G &nbsp; MiniLM + MLP 头：F1-samples = 0.5599</p>
+            <div class="sec-h reveal">逐级提升的原因</div>
+            <p class="body-text reveal"><strong>TF-IDF → MiniLM：</strong>从关键词匹配升级到语义理解。"a man struggles with his past" 在 TF-IDF 里只有词频，在 MiniLM 里编码了"挣扎/过去/内心冲突"的语义。</p>
+            <p class="body-text reveal" style="margin-top:10px;"><strong>Linear → MLP：</strong>genre 之间有非线性关系（如 Action + Sci-Fi 常共现），MLP 能捕捉这些交互模式，线性头不行。</p>
+            <div class="sec-h reveal">结论</div>
+            <p class="key-result reveal">MLP 头 > 线性头 > TF-IDF 基线</p>
+            <p class="body-sub reveal">语义表示 + 适当的分类头 = 小数据多标签的最佳实践。</p>
+        </div>
+        <div class="fig-panel">
+            <img src="figures/3_1_genre_compare.png" alt="类型预测对比" class="reveal">
+            <span class="fig-caption reveal">Fig 3.1 — 各方法多标签 F1 对比</span>
+        </div>
+    </div>
+</div>
+<div class="pagenum">15 / 23</div>
+</section>
+
+<!-- ========== SLIDE 16: 3.2 主题 × 年龄 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">3.2</span><span class="title">LDA 主题 × 年龄：哪些偏好随年龄变化？</span><span class="label">Topic × Age</span></div>
+<div class="content">
+    <div class="text-fig">
+        <div>
+            <div class="sec-h reveal">核心问题</div>
+            <p class="body-text reveal">genre 是离散标签（Action / Drama / …），但语义主题更细粒度。用 LDA 从电影简介中抽取"语义主题"，研究哪些主题偏好随年龄显著变化。</p>
+            <div class="sec-h reveal">Top 年龄敏感主题</div>
+            <p class="body-sub reveal">t1：love, man, falls, woman, young（爱情/青春）</p>
+            <p class="body-sub reveal">t2：war, world, ii, group, evil（战争/历史）</p>
+            <p class="body-sub reveal">t5：new, life, york（都市/生活）</p>
+            <div class="sec-h reveal">结论</div>
+            <p class="key-result reveal">各主题评分都随年龄升高 → 年长用户打分更宽容</p>
+            <p class="body-sub reveal">战争/历史主题的年龄梯度最陡，都市/爱情相对平缓。</p>
+        </div>
+        <div>
+            <div class="sec-h reveal">公式</div>
+            <div class="formula-box reveal">
+                $$\boldsymbol{\pi}_d \in \Delta^{K-1}\quad\text{（电影 }d\text{ 的 LDA 主题分布）}$$
+            </div>
+            <div class="formula-box reveal">
+                $$\text{discrim}_k = \frac{1}{|A|}\sum_a \left(\bar{r}_{ka} - \bar{r}_k\right)^2$$
+            </div>
+            <p class="formula-note reveal">\(\bar{r}_{ka}\)：年龄段 \(a\) 对主题 \(k\) 的加权平均评分；按 discrim 挑 top-3</p>
+            <div class="fig-panel" style="margin-top:20px;">
+                <img src="figures/3_2_theme_age.png" alt="主题×年龄" class="reveal">
+                <span class="fig-caption reveal">Fig 3.2 — 主题 × 年龄段 评分热图</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="pagenum">16 / 23</div>
+</section>
+
+<!-- ========== SLIDE 17: 3.3 LLM Embedding ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">3.3</span><span class="title">LLM 高维嵌入：进一步提升类型预测</span><span class="label">LLM Embedding</span></div>
+<div class="content">
+    <div class="text-fig">
+        <div>
+            <div class="sec-h reveal">核心问题</div>
+            <p class="body-text reveal">3.1 用 MiniLM（384 维），是通用小模型。能否换成<strong>大模型句嵌入</strong>（1536 维），利用更广泛的语料和更丰富的语义？</p>
+            <div class="sec-h reveal">结果</div>
+            <p class="body-sub reveal">G MiniLM+MLP：F1-samples = 0.5599</p>
+            <p class="key-result reveal">H LLM-emb+MLP：F1-samples = 0.6347</p>
+            <div class="sec-h reveal">结论</div>
+            <p class="key-result reveal">高维语义嵌入 + 适当正则 → 冻结方案最优</p>
+            <p class="body-sub reveal">但嵌入是"冻结"的——能否让模型针对电影分类任务端到端学习？→ 3.4 BERT 微调</p>
+        </div>
+        <div>
+            <div class="sec-h reveal">公式</div>
+            <div class="formula-box reveal">
+                $$\mathbf{z}_i^{\text{LLM}} = \text{Embed\_API}(\text{intro}_i) \in \mathbb{R}^{1536}$$
+            </div>
+            <div class="formula-box reveal">
+                $$H: \hat{y} = \sigma\!\left(\text{MLP}_{256}(\mathbf{z}_i^{\text{LLM}})\right)$$
+            </div>
+            <p class="formula-note reveal">1536 维 → 256 隐层 MLP → sigmoid 多标签输出</p>
+            <p class="formula-note reveal">维度高 → Dropout = 0.4 + weight decay 抑制过拟合</p>
+            <div class="fig-panel" style="margin-top:20px;">
+                <img src="figures/3_3_full_genre.png" alt="全量类型预测对比" class="reveal">
+                <span class="fig-caption reveal">Fig 3.3 — 全部方法类型预测指标对比</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="pagenum">17 / 23</div>
+</section>
+
+<!-- ========== SLIDE 18: 3.4 BERT 端到端微调 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">3.4</span><span class="title">BERT 端到端微调：让语义表示针对任务学习</span><span class="label">Fine-tuning</span></div>
+<div class="content">
+    <div class="text-fig">
+        <div>
+            <div class="sec-h reveal">核心思路</div>
+            <p class="body-text reveal">之前的方案（MiniLM / LLM-emb）都是<strong>冻结嵌入 + 训练浅头</strong>——预训练模型不了解"电影类型"这个任务。</p>
+            <p class="body-text reveal" style="margin-top:10px;">端到端微调：让 DistilBERT 的 <strong>6700 万参数全部</strong> 针对电影分类任务更新。</p>
+            <div class="sec-h reveal">结果对比</div>
+            <p class="body-sub reveal">H LLM-emb+MLP (冻结 1536 维)：F1 = 0.6347</p>
+            <p class="key-result reveal">I BERT-finetune (端到端 67M)：F1 = 0.6160</p>
+            <div class="sec-h reveal">分析</div>
+            <p class="body-text reveal">DistilBERT（67M 参数，768 维）微调 4 epoch 已接近冻结 LLM 1536 维方案。CPU 限制了训练轮数；更多 epoch 或用 GPU 可进一步提升。</p>
+        </div>
+        <div>
+            <div class="sec-h reveal">公式</div>
+            <div class="formula-box reveal">
+                $$I: \hat{y} = \sigma\!\left(W_c \cdot \text{ReLU}(W_p \cdot \text{BERT}_{\theta}(\text{intro}_i)_{[\text{CLS}]})\right)$$
+            </div>
+            <p class="formula-note reveal">\(\theta\) 端到端更新，lr = 2e-5，4 epochs，CPU 训练 ~95 min</p>
+            <div class="fig-panel" style="margin-top:20px;">
+                <img src="figures/3_4_bert_finetune.png" alt="BERT微调对比" class="reveal">
+                <span class="fig-caption reveal">Fig 3.4 — 加入 BERT 微调后全部方法对比</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="pagenum">18 / 23</div>
+</section>
+
+<!-- ========== SLIDE 19: 关键发现 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">关键发现</span><span class="title">最大杠杆：把基座 SVD 训练充分</span><span class="label">Key Finding</span></div>
+<div class="content">
+    <div class="two-col">
+        <div>
+            <div class="sec-h reveal">发现了什么？</div>
+            <p class="body-text reveal">原始 FunkSVD 实现每 epoch 仅采样 ~32% 数据进行梯度更新 → <strong>严重欠拟合</strong>。</p>
+            <p class="body-text reveal" style="margin-top:14px;">改为全量向量化 mini-batch SGD，纯 CPU，FunkSVD ≈ 35s，VisSVD ≈ 3min。</p>
+            <div class="sec-h reveal">效果</div>
+            <p class="key-result reveal" style="font-size:32px;">M3 MSE：0.823 → 0.714 &nbsp; ↓ 13.2%</p>
+            <p class="key-result reveal">异常用户 MSE：1.69 → 1.34</p>
+            <p class="body-text reveal" style="margin-top:14px;">这<strong>一步</strong>的提升，远超海报/LLM/Stacking/MOE 全部叠加（~1%）之总和。</p>
+        </div>
+        <div>
+            <div class="sec-h reveal">为什么这才是关键？</div>
+            <p class="body-text reveal">所有 side-information 只在协同信号不足时有用。如果基座本身就没训练好，side-info 看起来"有效"——实际上只是在弥补基座的欠拟合。</p>
+            <p class="body-text reveal" style="margin-top:14px;">一旦基座训练充分，side-info 的边际贡献几乎消失。</p>
+            <div class="sec-h reveal" style="margin-top:24px;">核心 Takeaway</div>
+            <p class="key-result reveal" style="font-size:26px;">主瓶颈是基座是否训练充分，不是缺信息</p>
+        </div>
+    </div>
+</div>
+<div class="pagenum">19 / 23</div>
+</section>
+
+<!-- ========== SLIDE 19: 反思诊断 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">反思</span><span class="title">为什么新增信息对全量 MSE 提升有限？</span><span class="label">Diagnosis</span></div>
+<div class="content">
+    <div style="max-width:1600px;">
+        <div class="sec-h reveal">根因一：新增信息与协同高度冗余</div>
+        <p class="body-text reveal">M3 与 M6 预测相关性 <strong>0.98</strong>。冷门电影仅占测试集 0.6%，冷用户 0%——side-info 只在极少数稀疏样本有用，加权到全量后被严重稀释。</p>
+        <div class="sec-h reveal">根因二：误差已接近不可约噪声地板</div>
+        <p class="body-text reveal">同一用户对同类电影评分波动大。M3 = 0.714 已逼近该数据的<strong>可预测性极限</strong>。</p>
+        <div class="sec-h reveal">根因三：集成 / 后处理天然增益小</div>
+        <p class="body-text reveal">M2+/M7 全面被 M3 压制；Stacking = 0.7386 反而 > M3（meta 过拟合）；异常后处理持平。</p>
+        <p class="body-text reveal" style="margin-top:14px;">这些是<strong>结构性原因</strong>：行为信号足够强、基座充分训练后，外部信息边际收益天然很小。</p>
+    </div>
+</div>
+<div class="pagenum">20 / 23</div>
+</section>
+
+<!-- ========== SLIDE 20: 更优方向 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">反思</span><span class="title">更能提升的方向</span><span class="label">Future Work</span></div>
+<div class="content">
+    <div style="max-width:1600px;">
+        <div class="sec-h reveal">① 升级矩阵分解模型</div>
+        <p class="body-text reveal">SVD++（纳入隐式反馈）、timeSVD++（偏置随时间漂移）。当前 FunkSVD 只用了显式评分。</p>
+        <div class="sec-h reveal">② 联合建模而非"残差外挂"</div>
+        <p class="body-text reveal">FM / DeepFM 把潜因子+人口学+内容放进一个模型，直接学交叉项。</p>
+        <div class="sec-h reveal">③ 集成要"去相关"</div>
+        <p class="body-text reveal">加入 user/item-KNN 等误差结构不同的模型，集成才有真增益。</p>
+        <div class="sec-h reveal">④ 换评测目标</div>
+        <p class="body-text reveal">推荐真正在意排序（NDCG / Recall@K），side-info 对排序帮助远大于逐点 MSE。</p>
+    </div>
+</div>
+<div class="pagenum">21 / 23</div>
+</section>
+
+<!-- ========== SLIDE 21: 总结 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="topbar"><span class="tag">总结</span><span class="title">期末总结与关键结论</span><span class="label">Summary</span></div>
+<div class="content">
+    <div class="two-col">
+        <div>
+            <div class="sec-h reveal">评分预测 (Part 2) 全量 MSE</div>
+            <p class="body-text reveal">M3 FunkSVD（训练充分）&emsp;<strong>0.7144</strong> ← 最佳</p>
+            <p class="body-sub reveal">M6 VisSVD 0.7184 · M7 LLM 0.8149</p>
+            <p class="body-sub reveal">Stacking 0.739 · SegBlend 0.713 · MOE 0.714</p>
+            <div class="sec-h reveal">类型预测 (Part 3)</div>
+            <p class="key-result reveal">最佳 H（LLM 1536 维 + MLP-256）F1 = 0.6347</p>
+            <p class="body-sub reveal">I BERT 微调 (端到端 67M) F1 = 0.6160，验证微调路线</p>
+            <div class="sec-h reveal">异常用户</div>
+            <p class="body-sub reveal">260 人，学生/教育工作者偏多，应"识别+分流"</p>
+        </div>
+        <div>
+            <div class="sec-h reveal">核心 Takeaways</div>
+            <p class="body-text reveal">① Side-info 只在稀疏区域有价值，全量提升有限是<strong>结构性的</strong></p>
+            <p class="body-text reveal" style="margin-top:10px;">② 异常用户应"识别+分流到合适专家"</p>
+            <p class="body-text reveal" style="margin-top:10px;">③ MOE 动态路由比 Stacking 更合理</p>
+            <p class="body-text reveal" style="margin-top:10px;">④ 语义嵌入 + 浅头 = 小数据最优；端到端微调是进一步提升方向</p>
+            <p class="key-result reveal" style="margin-top:14px;font-size:26px;">⑤ 最大杠杆 = 训练充分的基座 SVD（↓13%）</p>
+        </div>
+    </div>
+</div>
+<div class="pagenum">22 / 23</div>
+</section>
+
+<!-- ========== SLIDE 23: 谢谢 ========== -->
+<section class="slide">
+<div class="hairline-top"></div><div class="hairline-bot"></div>
+<div class="cover-content" style="align-items:flex-end;text-align:right;padding-right:200px;">
+    <div class="reveal" style="font-family:var(--font-display);font-size:160px;font-weight:400;line-height:0.96;color:var(--ink);letter-spacing:-0.005em;margin-bottom:32px;">谢谢</div>
+    <div class="reveal" style="width:120px;height:1.5px;background:var(--ink);margin-bottom:24px;margin-left:auto;"></div>
+    <div class="reveal" style="font-family:var(--font-mono);font-size:20px;color:var(--ink);letter-spacing:0.06em;">蒋名仪 &nbsp;&nbsp; 2500010771</div>
+</div>
+<div class="glitch-col" style="left:80px;top:80px;bottom:80px;" aria-hidden="true">
+    <span style="width:14px;height:52px;margin-left:24px"></span><span style="width:14px;height:36px;margin-left:12px"></span>
+    <span style="width:14px;height:68px;margin-left:0"></span><span style="width:14px;height:20px;margin-left:18px"></span>
+    <span style="width:14px;height:56px;margin-left:6px"></span><span style="width:14px;height:40px;margin-left:22px"></span>
+    <span style="width:14px;height:72px;margin-left:2px"></span><span style="width:14px;height:28px;margin-left:14px"></span>
+</div>
+<div class="pagenum">23 / 23</div>
+</section>
+
+</main>
+<div class="edit-hotzone"></div>
+<button class="edit-toggle" id="editToggle" title="Edit mode (E)">&#9998;</button>
+<div class="progress-bar" id="progressBar"></div>
+<script>
+/* === SLIDE PRESENTATION CONTROLLER === */
+class SlidePresentation {
+    constructor() {
+        this.slides = document.querySelectorAll('.slide');
+        this.currentSlide = 0;
+        this.stage = document.getElementById('deckStage');
+        this.progressBar = document.getElementById('progressBar');
+        this.isEditing = false;
+        this.setupStageScale();
+        this.setupKeyboardNav();
+        this.setupTouchNav();
+        this.setupWheelNav();
+        this.setupEditMode();
+        this.showSlide(0);
+    }
+    setupStageScale() {
+        const scale = () => {
+            const f = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+            const x = (window.innerWidth - 1920 * f) / 2;
+            const y = (window.innerHeight - 1080 * f) / 2;
+            this.stage.style.transform = `translate(${x}px, ${y}px) scale(${f})`;
+        };
+        scale();
+        window.addEventListener('resize', scale);
+    }
+    setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+            if (e.target.getAttribute('contenteditable')) return;
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); this.next(); }
+            if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); this.prev(); }
+            if (e.key === 'Home') { e.preventDefault(); this.showSlide(0); }
+            if (e.key === 'End') { e.preventDefault(); this.showSlide(this.slides.length - 1); }
+            if ((e.key === 'e' || e.key === 'E') && !e.target.getAttribute('contenteditable')) { this.toggleEditMode(); }
+        });
+    }
+    setupTouchNav() {
+        let startX = 0;
+        this.stage.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
+        this.stage.addEventListener('touchend', (e) => {
+            const dx = e.changedTouches[0].clientX - startX;
+            if (Math.abs(dx) > 50) { dx < 0 ? this.next() : this.prev(); }
+        }, { passive: true });
+    }
+    setupWheelNav() {
+        let lastWheel = 0;
+        document.addEventListener('wheel', (e) => {
+            if (Date.now() - lastWheel < 400) return;
+            lastWheel = Date.now();
+            e.deltaY > 0 ? this.next() : this.prev();
+        }, { passive: true });
+    }
+    setupEditMode() {
+        const toggle = document.getElementById('editToggle');
+        const hotzone = document.querySelector('.edit-hotzone');
+        let hideTimeout = null;
+        hotzone.addEventListener('mouseenter', () => { clearTimeout(hideTimeout); toggle.classList.add('show'); });
+        hotzone.addEventListener('mouseleave', () => { hideTimeout = setTimeout(() => { if (!this.isEditing) toggle.classList.remove('show'); }, 400); });
+        toggle.addEventListener('mouseenter', () => { clearTimeout(hideTimeout); });
+        toggle.addEventListener('mouseleave', () => { hideTimeout = setTimeout(() => { if (!this.isEditing) toggle.classList.remove('show'); }, 400); });
+        toggle.addEventListener('click', () => { this.toggleEditMode(); });
+        hotzone.addEventListener('click', () => { this.toggleEditMode(); });
+    }
+    toggleEditMode() {
+        this.isEditing = !this.isEditing;
+        const toggle = document.getElementById('editToggle');
+        toggle.classList.toggle('active', this.isEditing);
+        document.querySelectorAll('.body-text, .body-sub, .key-result, .formula-note, .note-text, .topbar .title, .sec-h').forEach(el => {
+            el.contentEditable = this.isEditing ? 'true' : 'false';
+        });
+    }
+    showSlide(index) {
+        this.currentSlide = Math.max(0, Math.min(index, this.slides.length - 1));
+        this.slides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === this.currentSlide);
+            slide.classList.toggle('visible', i === this.currentSlide);
+        });
+        this.progressBar.style.width = ((this.currentSlide + 1) / this.slides.length * 100) + '%';
+    }
+    next() { this.showSlide(this.currentSlide + 1); }
+    prev() { this.showSlide(this.currentSlide - 1); }
+}
+document.addEventListener('DOMContentLoaded', () => { new SlidePresentation(); });
+</script>
+</body>
+</html>

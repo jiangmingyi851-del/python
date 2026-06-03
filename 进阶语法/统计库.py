@@ -1,0 +1,101 @@
+import collections
+import statistics
+import pandas
+import numpy as np
+# counter=collections.Counter()
+# counter.update([1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,7,8,9])
+# print(counter)
+# print(counter.most_common(3))
+# data=[1,2,3,4,5,6,7,8]
+# print(statistics.mean(data))
+# print(statistics.median(data))
+# print(statistics.mode(data))
+# print(statistics.stdev(data))
+# print(statistics.variance(data))
+# s=pandas.Series([1,2,3,4,5,6,7,8])
+# print(s)
+# print(s.describe())
+# df=pandas.DataFrame({
+#     'A':[1,2,3,4],
+#     'B':['a','b','c','d'],
+#     'C':[1.1,2.2,3.3,4.4]
+# })
+# print(df)
+# print(df.describe())
+# print(df['A'])
+# print(df.loc[0])
+# print(df.iloc[0])
+# print(df[df['A']>2])
+# data=np.array([[1,2,3],[4,5,6],[7,8,9]])
+# print(data)
+# print(data.shape)
+# print(data.dtype)
+# print(data[0,0])
+# print(data[:,0])
+# print(data[0,:])
+# print(data[data>5])
+# print(data.sum())
+# print(data.mean())
+# print(data.max())
+# print(data.min())
+# print(data.std())
+# print(data.var())
+# print(data.T)
+# print(data.reshape(1,9))
+# print(np.zeros((3,3)))
+# print(np.ones((2,2)))
+# print(np.eye(3))
+# print(np.arange(0,10,2))
+# print(np.linspace(0,1,5))
+# print(np.random.rand(3,3))
+# print(np.random.randint(0,10,(3,3)))
+# print(np.random.seed(0))
+# print(np.random.rand(3,3))
+# print(np.random.randint(0,10,(3,3)))
+# print(np.random.seed(0))
+# a=np.array([1,2,3])
+# b=np.array([4,5,6])
+# print(a+b)
+# print(a-b)
+# print(a*b)
+# print(a/b)
+# print(np.dot(a,b))
+# print(np.cross(a,b))
+# print(np.concatenate((a,b)))
+# print(np.vstack((a,b)))
+# print(np.hstack((a,b)))
+# print(np.split(a,3))
+# print(np.sort(a))
+# print(np.argsort(a))
+# print(np.unique(a))
+# print(np.where(a>2))
+# print(np.save('data.npy',a))
+# print(np.load('data.npy'))
+# import pickle
+# with open('data.pkl','wb') as f:
+#     pickle.dump(a,f)
+
+# with open('data.pkl','rb') as f:
+#     b=pickle.load(f)
+# print(b)
+# import json
+# data={'a':1,'b':2,'c':3}
+# with open('data.json','w') as f:
+#     json.dump(data,f)
+# with open('data.json','r') as f:
+#     data=json.load(f)
+# print(data)
+import re
+import math
+import cmath
+import random
+import bisect
+import heapq
+import itertools
+import functools
+import operator
+import time
+import datetime
+import os
+import sys
+

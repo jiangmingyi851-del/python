@@ -1,0 +1,616 @@
+[
+  {
+    "number": 1,
+    "title": "",
+    "content": [
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "\u671f\u672b\u5927\u4f5c\u4e1a\u6c47\u62a5"
+      },
+      {
+        "type": "text",
+        "content": "\u7535\u5f71\u63a8\u8350\u7cfb\u7edf \u00b7 \u8bc4\u5206\u9884\u6d4b\u7684\u4f18\u5316\u4e0e\u6df1\u5316  +  \u7535\u5f71\u7c7b\u578b\u9884\u6d4b\u7684\u6df1\u5316"
+      },
+      {
+        "type": "text",
+        "content": "\u848b\u540d\u4eea   |   2500010771"
+      },
+      {
+        "type": "text",
+        "content": "\u671f\u672b\u65b0\u589e\u4efb\u52a1: \u6d77\u62a5\u89c6\u89c9 \u00b7 LLM \u80cc\u666f\u77e5\u8bc6 \u00b7 \u591a\u65b9\u6848\u534f\u540c \u00b7 \u5f02\u5e38\u7528\u6237\u753b\u50cf \u00b7 MOE \u00b7 BERT/LLM \u7c7b\u578b\u9884\u6d4b"
+      }
+    ],
+    "images": [],
+    "notes": ""
+  },
+  {
+    "number": 2,
+    "title": "",
+    "content": [
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "\u603b\u89c8   \u671f\u672b\u65b0\u589e\u4efb\u52a1\u4e00\u89c8"
+      },
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "2.3"
+      },
+      {
+        "type": "text",
+        "content": "\u6d77\u62a5\u89c6\u89c9\u7279\u5f81\u589e\u5f3a\u8bc4\u5206\u9884\u6d4b"
+      },
+      {
+        "type": "text",
+        "content": "ResNet-50 \u2192 PCA \u2192 Visual-KNN / VisSVD"
+      },
+      {
+        "type": "text",
+        "content": "\u5fc5\u505a1a"
+      },
+      {
+        "type": "text",
+        "content": "2.4"
+      },
+      {
+        "type": "text",
+        "content": "LLM \u80cc\u666f\u77e5\u8bc6\u589e\u5f3a\u8bc4\u5206\u9884\u6d4b"
+      },
+      {
+        "type": "text",
+        "content": "DeepSeek API + MiniLM \u53e5\u5411\u91cf \u2192 \u5185\u5bb9\u6b8b\u5dee(LightGBM)"
+      },
+      {
+        "type": "text",
+        "content": "\u5fc5\u505a1b"
+      },
+      {
+        "type": "text",
+        "content": "2.5"
+      },
+      {
+        "type": "text",
+        "content": "\u4f20\u7edf SVD \u4e0e\u65b0\u65b9\u6848\u5bf9\u6bd4 + Stacking"
+      },
+      {
+        "type": "text",
+        "content": "4 \u4e13\u5bb6 \u00d7 4 \u573a\u666f + Ridge \u5143\u5b66\u4e60\u5668"
+      },
+      {
+        "type": "text",
+        "content": "\u5fc5\u505a1c"
+      },
+      {
+        "type": "text",
+        "content": "2.6"
+      },
+      {
+        "type": "text",
+        "content": "SVD \u5f02\u5e38\u6837\u672c\u5206\u6790 + \u5f02\u5e38\u7528\u6237\u753b\u50cf"
+      },
+      {
+        "type": "text",
+        "content": "\u6b8b\u5dee\u9608\u503c \u2192 KMeans \u753b\u50cf \u2192 \u5207\u6362\u4e13\u5bb6 / \u5b9a\u5411\u6821\u51c6"
+      },
+      {
+        "type": "text",
+        "content": "\u5fc5\u505a2a+\u53ef\u9009A2"
+      },
+      {
+        "type": "text",
+        "content": "2.7"
+      },
+      {
+        "type": "text",
+        "content": "\u590d\u6742\u6a21\u578b: \u5206\u7c7b\u5668 + \u591a\u4e13\u5bb6 MOE"
+      },
+      {
+        "type": "text",
+        "content": "Gating MLP + softmax \u52a8\u6001\u8def\u7531"
+      },
+      {
+        "type": "text",
+        "content": "\u53ef\u90093"
+      },
+      {
+        "type": "text",
+        "content": "3.1"
+      },
+      {
+        "type": "text",
+        "content": "BERT/MiniLM + \u5fae\u8c03\u5c42\u9884\u6d4b\u7c7b\u578b"
+      },
+      {
+        "type": "text",
+        "content": "frozen MiniLM \u2192 Linear / MLP \u591a\u6807\u7b7e\u5934"
+      },
+      {
+        "type": "text",
+        "content": "\u5fc5\u505aTask2"
+      },
+      {
+        "type": "text",
+        "content": "3.2"
+      },
+      {
+        "type": "text",
+        "content": "\u4e3b\u9898\u7535\u5f71\u7c7b \u00d7 \u5e74\u9f84\u76f8\u5173\u6027"
+      },
+      {
+        "type": "text",
+        "content": "LDA \u4e3b\u9898 \u2192 \u5e74\u9f84\u533a\u5206\u5ea6 \u2192 \u4ea4\u4e92\u9879\u5efa\u6a21"
+      },
+      {
+        "type": "text",
+        "content": "\u53ef\u9009B1"
+      },
+      {
+        "type": "text",
+        "content": "3.3"
+      },
+      {
+        "type": "text",
+        "content": "LLM Embedding + \u5fae\u8c03\u9884\u6d4b\u7c7b\u578b"
+      },
+      {
+        "type": "text",
+        "content": "yunwu.ai embedding(1536\u7ef4) \u2192 MLP-256"
+      },
+      {
+        "type": "text",
+        "content": "\u53ef\u9009B2"
+      },
+      {
+        "type": "text",
+        "content": "\u671f\u4e2d\u57fa\u7ebf(\u4ec5\u4f5c\u5bf9\u7167, \u4e0d\u5c55\u5f00): M2 \u52a0\u6027\u504f\u7f6e r\u0302=\u03bc+b_u+b_i ; M3 FunkSVD \u52a0\u6f5c\u56e0\u5b50 q_i\u00b7p_u ; M2+ \u518d\u53e0\u52a0\u7c7b\u578b/\u4eba\u53e3\u5b66\u504f\u7f6e\u3002"
+      }
+    ],
+    "images": [],
+    "notes": ""
+  },
+  {
+    "number": 3,
+    "title": "",
+    "content": [
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "2.3   \u6d77\u62a5\u89c6\u89c9\u7279\u5f81\u589e\u5f3a\u8bc4\u5206\u9884\u6d4b"
+      },
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "\u2460 \u95ee\u9898\u52a8\u673a\n\u534f\u540c\u8fc7\u6ee4\u53ea\u770b\"\u8c01\u6253\u4e86\u51e0\u5206\", \u5b8c\u5168\u6ca1\u7528\u7535\u5f71\u753b\u9762\u3002\u6d77\u62a5\u91cc\u7684\u8272\u8c03/\u6784\u56fe/\n\u4eba\u7269\u6392\u5e03\u662f\u7a33\u5b9a\u7684\"\u98ce\u683c\u4fe1\u53f7\", \u5bf9\u51e0\u4e4e\u6ca1\u4eba\u8bc4\u5206\u7684\u51b7\u95e8\u7535\u5f71\u5c24\u5176\u5b9d\u8d35\u3002\n\u2461 \u6838\u5fc3\u601d\u60f3\n\u628a\u6d77\u62a5\u89c6\u89c9\u5411\u91cf\u4f5c\u4e3a\u7535\u5f71 side-information \u6ce8\u5165\u9884\u6d4b: \u5373\u4f7f\u67d0\u7535\u5f71\u8bc4\u5206\u6781\u5c11,\n\u89c6\u89c9\u5411\u91cf\u4ecd\u80fd\u7ed9\u5b83\u4e00\u4e2a\u975e\u96f6\u7684\u6f5c\u56e0\u5b50\u4f30\u8ba1, \u7f13\u89e3\u51b7\u542f\u52a8\u3002\n\u2462 \u516c\u5f0f (M6 VisSVD)\n  r\u0302_ui = \u03bc + b_u + b_i + p_u\u1d40 ( q_i + W\u00b7\u1e7d_i )\n\u1e7d_i: \u6d77\u62a5 PCA \u540e\u89c6\u89c9\u5411\u91cf; W: \u89c6\u89c9\u2192\u6f5c\u7a7a\u95f4\u6295\u5f71(\u53ef\u5b66\u4e60);\nq_i: \u81ea\u7531\u6f5c\u56e0\u5b50; \u51b7\u95e8\u7535\u5f71 q_i \u5b66\u4e0d\u52a8\u65f6, W\u00b7\u1e7d_i \u4ecd\u63d0\u4f9b\u4fe1\u53f7\u3002\n\u2463 \u5b9e\u73b0\u6b65\u9aa4\nStep1 ResNet-50/Img2Vec \u62bd 512\u7ef4\u6d77\u62a5\u7279\u5f81 (\u7f13\u5b58 poster_feat.pkl)\nStep2 PCA \u964d\u5230 64\u7ef4\u53bb\u566a; \u4f59\u5f26\u76f8\u4f3c\u5ea6\u5efa Visual Item-KNN (M5)\nStep3 \u628a \u1e7d_i \u6ce8\u5165 FunkSVD \u8bad\u7ec3 W (M6 VisSVD)\nStep4 \u6309\u7535\u5f71\u6d41\u884c\u5ea6\u5206\u6876, \u5355\u72ec\u770b\u51b7\u95e8\u7535\u5f71\u589e\u76ca"
+      },
+      {
+        "type": "text",
+        "content": "\u2464 \u8bc4\u6d4b & \u2465 \u7ed3\u8bba\n\u5168\u91cf\u5f00\u653e MSE:  M3=0.7144   M5_VisKNN=1.3373   M6_VisSVD=0.7184\n\u89c6\u89c9\u4fe1\u53f7\u5728\u51b7\u95e8\u7535\u5f71(\u8bc4\u5206<100)\u4e0a RMSE \u964d\u4f4e\u6700\u660e\u663e;\n\u70ed\u95e8\u7535\u5f71\u534f\u540c\u4fe1\u53f7\u5df2\u5145\u8db3, \u89c6\u89c9\u8fb9\u9645\u8d21\u732e\u88ab\u7a00\u91ca\u3002\n\u2192 \u5178\u578b\u7684\"side-information \u53ea\u5728\u7a00\u758f\u533a\u57df\u6709\u6548\"\u3002"
+      }
+    ],
+    "images": [
+      {
+        "path": "assets/slide3_img1.png",
+        "width": 5486400,
+        "height": 2419491
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "number": 4,
+    "title": "",
+    "content": [
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "2.4   LLM \u80cc\u666f\u77e5\u8bc6\u589e\u5f3a\u8bc4\u5206\u9884\u6d4b"
+      },
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "\u2460 \u95ee\u9898\u52a8\u673a\nratings \u8868\u53ea\u6709\u884c\u4e3a\u4fe1\u53f7, \u7f3a\u5c11\u7535\u5f71\u7684\"\u4e16\u754c\u77e5\u8bc6\": \u53e3\u7891\u3001\u4e3b\u9898\u3001\u5956\u9879\u3001\n\u60c5\u7eea\u98ce\u683c\u3002\u8fd9\u4e9b\u4fe1\u606f\u6070\u597d\u5b58\u5728\u4e8e LLM \u4e0e\u6587\u672c\u8bed\u6599\u91cc\u3002\n\u2461 \u6838\u5fc3\u601d\u60f3 (\u53cc\u8def\u5f84)\nA \u5728\u7ebf LLM: DeepSeek/yunwu.ai \u8fd4\u56de online_rating / themes /\n   award_level / sentiment, \u7ed3\u6784\u5316\u4e3a\u6570\u503c\u7279\u5f81 (\u5e26\u7f13\u5b58+\u9650\u6d41)\u3002\nB \u672c\u5730 MiniLM: \u628a name+intro+\u5bfc\u6f14+\u4e3b\u6f14 \u7f16\u7801\u6210 384\u7ef4\u8bed\u4e49\u5411\u91cf,\n   \u4f5c\u4e3a API \u4e0d\u53ef\u7528\u65f6\u7684 fallback, \u4fe1\u606f\u4e92\u8865\u3002\n\u2462 \u516c\u5f0f (M7 \u5185\u5bb9\u6b8b\u5dee)\n  r\u0302_ui = r\u0302_ui^{M2+}  +  g_\u03b8( c_i , u_u )\nc_i: \u7535\u5f71\u5185\u5bb9\u7279\u5f81(LLM-KB \u2295 \u53e5\u5411\u91cf); u_u: \u7528\u6237\u4eba\u53e3\u5b66;\ng_\u03b8: LightGBM \u5b66\"\u57fa\u7ebf\u6ca1\u62df\u5408\u5230\u7684\u6b8b\u5dee\", \u81ea\u52a8\u6355\u6349\u4ea4\u53c9\u9879\u3002\n\u2463 \u5b9e\u73b0\u6b65\u9aa4\nStep1 DeepSeek \u53d6\u80cc\u666f\u77e5\u8bc6 \u2192 Step2 MiniLM \u53e5\u5411\u91cf fallback\nStep3 \u5408\u6210\u7535\u5f71\u5185\u5bb9\u7279\u5f81\u77e9\u9635 \u2192 Step4 \u8bad\u7ec3 LightGBM \u6b8b\u5dee\u5668"
+      },
+      {
+        "type": "text",
+        "content": "\u2464 \u8bc4\u6d4b & \u2465 \u7ed3\u8bba\nM7 \u5185\u5bb9\u6b8b\u5dee\u6a21\u578b (LightGBM residual) \u5f00\u653e MSE = 0.8149\n\u91cd\u8981\u7279\u5f81 Top: M2_pred, occ_id, age, c0, c1, c4\nM2_pred(\u534f\u540c\u57fa\u7ebf)\u4e3b\u5bfc, occ/age/\u5185\u5bb9\u5411\u91cf c* \u6709\u4e00\u5b9a\u8d21\u732e;\n\u4f46\u57fa\u5ea7 M3 \u8bad\u7ec3\u5145\u5206\u540e(0.714), M7 \u672a\u8d85\u8fc7\u7eaf\u534f\u540c\u2014\u2014\n\u8bf4\u660e\u8be5\u6570\u636e\u884c\u4e3a\u4fe1\u53f7\u5df2\u8db3\u591f\u5f3a, \u5916\u90e8\u5185\u5bb9\u662f\u8865\u5145\u800c\u975e\u4e3b\u529b\u3002"
+      }
+    ],
+    "images": [
+      {
+        "path": "assets/slide4_img1.png",
+        "width": 5486400,
+        "height": 3008273
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "number": 5,
+    "title": "",
+    "content": [
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "2.5   \u4f20\u7edf SVD \u4e0e\u65b0\u65b9\u6848\u5bf9\u6bd4 + Stacking \u534f\u540c"
+      },
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "\u2460 \u95ee\u9898\u52a8\u673a\n\u56db\u4e2a\u4e13\u5bb6\u5404\u6709\u6240\u957f, \u5355\u770b\u4e00\u4e2a\u5168\u91cf MSE \u770b\u4e0d\u51fa\u5dee\u5f02\u3002\u8981\u6309\u4e1a\u52a1\u573a\u666f\u62c6\u5f00,\n\u518d\u7528\"\u534f\u540c\"\u628a\u5b83\u4eec\u7684\u957f\u5904\u5408\u8d77\u6765\u3002\n\u2461 \u6838\u5fc3\u601d\u60f3 + \u516c\u5f0f (Stacking)\n  r\u0302^{Stack} = \u03b1\u2080 + \u03b1\u1d40 z ,  z = (M3, M2+, M6, M7)\n  \u03b1 = argmin \u2016y \u2212 \u03b1\u20801 \u2212 Z\u03b1\u2016\u00b2 + \u03bb\u2016\u03b1\u2016\u00b2   (Ridge)\nz: \u56db\u4e2a\u6a21\u578b\u5728\u540c\u4e00\u6837\u672c\u4e0a\u7684\u9884\u6d4b\u62fc\u6210\u7684 4\u7ef4\u5411\u91cf;\n\u03b1: Ridge \u5143\u5b66\u4e60\u5668\u5b66\u5230\u7684\u5168\u5c40\u6743\u91cd; \u4e3a\u9632\u6cc4\u6f0f, \u7528\u8bad\u7ec3\u96c6\u518d\u5207\n\u4e00\u6298 meta-val \u5b66 \u03b1, \u4e0d\u78b0\u5f00\u653e\u6d4b\u8bd5\u96c6\u3002\n\u2462 \u573a\u666f\u5b9e\u6d4b (\u57fa\u5ea7\u8bad\u7ec3\u5145\u5206\u540e)\n\u51b7\u95e8\u7535\u5f71 \u2192 M6 VisSVD \u7565\u4f18 (\u89c6\u89c9 side-info)\n\u7a00\u6709 genre / \u70ed\u95e8\u5934\u90e8 \u2192 M3 \u6700\u4f18 (\u534f\u540c\u6700\u5f3a)\nM2+/M7 (\u4eba\u53e3\u5b66/\u5185\u5bb9) \u5168\u573a\u666f\u88ab\u538b\u5236\u2014\u2014\n\u884c\u4e3a\u534f\u540c\u4fe1\u53f7\u5df2\u8db3\u591f\u5f3a, \u5916\u90e8\u4fe1\u606f\u96be\u518d\u52a0\u5206\u3002"
+      },
+      {
+        "type": "text",
+        "content": "\u2463\u2464 \u573a\u666f\u7ec6\u5206 MSE & \u7ed3\u8bba\nCold movie (<20): M3=0.9719 M6=0.9652 M7=1.165\nRare genre: M3=0.6638 M6=0.6661 M7=0.7445\nHot (>2000): M3=0.6177 M6=0.6313 M7=0.7345\nStacking=0.7386  SegBlend=0.7132  (\u5355\u6a21\u578b M3=0.7144)\n\u5168\u5c40 Stacking \u53cd\u800c\u7565\u5dee\u4e8e M3 \u5355\u6a21\u578b(meta \u8fc7\u62df\u5408); \u5f3a\u76f8\u5173\u4e13\u5bb6\n\u96c6\u6210\u589e\u76ca\u6709\u9650 \u2192 \u89c1\u53cd\u601d\u9875\u3002"
+      }
+    ],
+    "images": [
+      {
+        "path": "assets/slide5_img1.png",
+        "width": 5486400,
+        "height": 2430590
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "number": 6,
+    "title": "",
+    "content": [
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "2.6 \u2460   SVD \u5f02\u5e38\u6837\u672c\u5206\u6790 + \u5f02\u5e38\u7528\u6237\u753b\u50cf"
+      },
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "\u2460 \u5f02\u5e38\u5b9a\u4e49 (\u6b8b\u5dee\u9608\u503c\u6cd5)\n  e_ui = r_ui \u2212 r\u0302_ui^{M3} ,   \u5f02\u5e38 \u21d4 |e_ui| > \u03c4=1.5\n  \u5f02\u5e38\u7528\u6237 = \u8bc4\u5206\u6570\u226530 \u7528\u6237\u4e2d, \u5e73\u5747|e_u| \u6392\u540d\u524d 5%\ne_ui: M3 \u9884\u6d4b\u6b8b\u5dee; |e_u|: \u7528\u6237\u5e73\u5747\u7edd\u5bf9\u6b8b\u5dee\u3002\n\u5f02\u5e38\u6837\u672c\u5360\u6bd4 \u2248 4.57% ;  \u5f02\u5e38\u7528\u6237 = 260 \u4eba\u3002\n\u2461 \u771f\u5b9e\u753b\u50cf (\u4ee5 notebook \u7ed3\u8bba\u4e3a\u51c6, \u4fee\u6b63\u65e7\u6807\u7b7e)\n\u804c\u4e1a: \u4ee5 college/grad student \u7b49\u4e3a\u4e3b, \u5b66\u751f+\u6559\u80b2\u5de5\u4f5c\u8005\n  \u5408\u8ba1\u5360 32%  (\u5168\u4f53\u4ec5 24%) \u2192 \u660e\u663e\u504f\u9ad8\n\u5e74\u9f84: \u6a2a\u8de8 18-24 / 25-34 / 35-44 \u591a\u4e2a\u533a\u95f4, \u5e76\u975e\u5355\u4e00 25-34;\n\u9898\u6750: \u4ee5 Comedy\u3001Drama\u3001Action\u3001Thriller \u4e3a\u4e3b\u2014\u2014\n  Comedy \u5404\u7c07\u5747\u5c45\u9996, Romance \u5728\u504f\u7231\u7231\u60c5\u7247\u7684\u7c07\u5c24\u4e3a\u7a81\u51fa\u3002\n\u2462 \u9690\u85cf\u56e0\u7d20: \u5f02\u5e38\u6e90\u4e8e\u8fd9\u6279\u4eba\u8bc4\u5206\u4e60\u60ef\u4e2a\u6027\u5316(\u8fc7\u4e25/\u8fc7\u677e/\u53e3\u5473\u504f\u7a84),\n   \u5168\u5c40\u534f\u540c\u7684 M3 \u96be\u4ee5\u62df\u5408, \u6545\u6b8b\u5dee\u88ab\u653e\u5927\u800c\u88ab\u8bc6\u522b\u51fa\u6765\u3002"
+      },
+      {
+        "type": "text",
+        "content": "\u753b\u50cf\u4e09\u8054\u56fe\n\u5de6: \u804c\u4e1a\u5206\u5e03(\u5b66\u751f/\u6559\u80b2\u5de5\u4f5c\u8005\u7a81\u51fa)\n\u4e2d: \u5e74\u9f84\u5206\u5e03(\u8de8 18-44)\n\u53f3: \u9898\u6750\u504f\u597d(Comedy \u4e3b\u5bfc, Romance \u663e\u8457)"
+      }
+    ],
+    "images": [
+      {
+        "path": "assets/slide6_img1.png",
+        "width": 5623560,
+        "height": 1601364
+      },
+      {
+        "path": "assets/slide6_img2.png",
+        "width": 2743200,
+        "height": 1344933
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "number": 7,
+    "title": "",
+    "content": [
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "2.6 \u2461   \u5f02\u5e38\u7528\u6237\u805a\u7c7b\u753b\u50cf + \u5207\u6362\u4e13\u5bb6\u6a21\u578b"
+      },
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "\u805a\u7c7b (KMeans, \u884c\u4e3a\u753b\u50cf\u7279\u5f81)\n\u7279\u5f81: \u8bc4\u5206\u5747\u503c/\u65b9\u5dee\u3001\u9ad8\u5206%/\u4f4e\u5206%\u3001\u9898\u6750\u71b5\u3001\u504f\u597d\u5e74\u4ee3\n4 \u4e2a\u5f02\u5e38\u7528\u6237\u7c07, \u5404\u6709\u4e0d\u540c\u8bc4\u5206\u884c\u4e3a + \u804c\u4e1a/\u9898\u6750\u753b\u50cf:"
+      },
+      {
+        "type": "text",
+        "content": "C0 \u4e2d\u5eb8\u9ad8\u6b8b\u5dee\u578b (n=50): \u5747\u52063.55 \u9ad8\u520656%/\u4f4e\u520623% | academic/educato | 35-44 | Drama\u3001Comedy\u3001Action\nC1 \u4e2d\u5eb8\u9ad8\u6b8b\u5dee\u578b (n=91): \u5747\u52063.37 \u9ad8\u520652%/\u4f4e\u520628% | college/grad stu | 25-34 | Comedy\u3001Drama\u3001Action\nC2 \u4f4e\u5206\u4e25\u82db\u578b (n=57): \u5747\u52062.81 \u9ad8\u520635%/\u4f4e\u520644% | college/grad stu | 25-34 | Comedy\u3001Action\u3001Drama\nC3 \u9ad8\u5206\u5bbd\u677e\u578b (n=62): \u5747\u52063.79 \u9ad8\u520664%/\u4f4e\u520618% | college/grad stu | 25-34 | Comedy\u3001Drama\u3001Action"
+      },
+      {
+        "type": "text",
+        "content": "\u5207\u6362\u4e13\u5bb6: \u5f02\u5e38\u7528\u6237\u4e0a\u8c01\u7684 MSE \u6700\u4f4e?\nM3 FunkSVD: \u5f02\u5e38=1.3456  \u6b63\u5e38=0.6897\nM2+ \u5206\u5c42\u504f\u7f6e: \u5f02\u5e38=1.5098  \u6b63\u5e38=0.8031\nM6 VisSVD: \u5f02\u5e38=1.3418  \u6b63\u5e38=0.694\nM7 LLM/Content: \u5f02\u5e38=1.4895  \u6b63\u5e38=0.7885\n\u2192 \u672c\u6b21\u5212\u5206\u6700\u4f73\u4e13\u5bb6: M6 VisSVD\n\u5f02\u5e38\u7528\u6237\u8bef\u5dee\u2248\u6b63\u5e38\u7528\u6237\u7684 2 \u500d\u3002\u57fa\u5ea7\u8bad\u7ec3\u5145\u5206\u540e\u6700\u4f73\u4e13\u5bb6\u4e3a M6/M3\n(\u6f5c\u56e0\u5b50+\u89c6\u89c9), \u4e0e notebook \u4e00\u81f4; M2+/M7(\u4eba\u53e3\u5b66/\u5185\u5bb9)\u53cd\u800c\u66f4\u5dee\u2014\u2014\n\u5f02\u5e38\u6e90\u4e8e\u4e2a\u4eba\u6f5c\u5728\u53e3\u5473, \u800c\u975e\u7f3a\u4eba\u53e3\u5b66/\u5185\u5bb9\u7279\u5f81\u3002"
+      }
+    ],
+    "images": [
+      {
+        "path": "assets/slide7_img1.png",
+        "width": 5623560,
+        "height": 1290847
+      },
+      {
+        "path": "assets/slide7_img2.png",
+        "width": 5623560,
+        "height": 2834983
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "number": 8,
+    "title": "",
+    "content": [
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "2.6 \u2462   \u5f02\u5e38\u7528\u6237\u9a71\u52a8\u7684\u5b9a\u5411\u4f18\u5316"
+      },
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "\u2460 \u601d\u8def: \u4e0d\u52a8\u6b63\u5e38\u7528\u6237, \u53ea\u5bf9\u5df2\u8bc6\u522b\u5f02\u5e38\u7528\u6237\u505a\u5c40\u90e8\u6821\u51c6\n\u2461 \u56fa\u5b9a\u7269\u54c1\u504f\u7f6e, \u91cd\u4f30\u7528\u6237\u504f\u7f6e\n  b_u* = \u03a3_{i\u2208I(u)} (r_ui \u2212 \u03bc \u2212 b_i) / (|I(u)| + \u03bb_u)\nb_i \u56fa\u5b9a\u4e0d\u52a8, \u53ea\u7528\u7528\u6237\u81ea\u5df1\u7684\u6b8b\u5dee\u6536\u7f29\u4f30\u8ba1 b_u*, \u9632\u6b62 SVD\n\u5bf9\u6781\u7aef\u7528\u6237\u8fc7\u62df\u5408\u3002\n\u2462 \u7528\u6237\u7c07\u4e13\u5c5e\u4e13\u5bb6\u878d\u5408\n  r\u0302_ui = \u03a3_k w_{g(u),k} \u00b7 r\u0302_ui^{(k)}\n  w_g = softmax( \u2212 MSE_g / \u03c4 )\ng(u): \u7528\u6237\u6240\u5c5e\u5f02\u5e38\u7c07; w_{g,k}: \u5728\u9a8c\u8bc1\u96c6\u4e0a\u6309\u5404\u4e13\u5bb6\u8bef\u5dee\u5b66\u5230\u7684\n\u7c07\u4e13\u5c5e\u6743\u91cd; \u8bef\u5dee\u8d8a\u5c0f\u6743\u91cd\u8d8a\u5927\u3002\u53ea\u4f5c\u7528\u4e8e\u540c\u7c07\u5f02\u5e38\u7528\u6237\u3002\n\u2463 \u7ed3\u679c\n\u5f02\u5e38\u7528\u6237\u6d4b\u8bd5 MSE: 1.342 \u2192 1.3443\n\u9a8c\u8bc1\u96c6\u81ea\u52a8\u9009\u7cfb\u6570: \u03b1_fixed=0.0, \u03b2_cluster=0.8\n\u6ce8: \u57fa\u5ea7\u8bad\u7ec3\u5145\u5206\u540e, \u5f02\u5e38\u7528\u6237\u8bef\u5dee\u5df2\u57fa\u672c\u662f\u4e0d\u53ef\u7ea6\u566a\u58f0, \u540e\u5904\u7406\n\u51e0\u4e4e\u6301\u5e73(1.342\u21921.344)\u3002\u4ef7\u503c\u5728\"\u8bc6\u522b+\u5206\u6d41\", \u800c\u975e\u5168\u91cf\u5927\u8df3\u53d8(\u89c1\u53cd\u601d\u9875)\u3002"
+      },
+      {
+        "type": "text",
+        "content": "\u5404\u7c07\u4e13\u5bb6\u6743\u91cd\u793a\u4f8b\nC0 \u4e2d\u5eb8\u9ad8\u6b8b\u5dee\u578b: M3=0.989 M2+=0.0 M6=0.011 M7=0.0\nC1 \u4e2d\u5eb8\u9ad8\u6b8b\u5dee\u578b: M3=0.987 M2+=0.0 M6=0.013 M7=0.0\nC2 \u4f4e\u5206\u4e25\u82db\u578b: M3=0.99 M2+=0.0 M6=0.01 M7=0.0\nC3 \u9ad8\u5206\u5bbd\u677e\u578b: M3=0.974 M2+=0.0 M6=0.026 M7=0.0"
+      }
+    ],
+    "images": [
+      {
+        "path": "assets/slide8_img1.png",
+        "width": 5394960,
+        "height": 2659031
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "number": 9,
+    "title": "",
+    "content": [
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "2.7   \u590d\u6742\u6a21\u578b: \u5206\u7c7b\u5668 + \u591a\u4e13\u5bb6\u7cfb\u7edf (MOE)"
+      },
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "\u2460 \u95ee\u9898\u52a8\u673a\nStacking \u7ed9\u6240\u6709\u6837\u672c\u540c\u4e00\u7ec4\u6743\u91cd; \u4f46 2.5/2.6 \u663e\u793a\u4e0d\u540c\u573a\u666f\u3001\u4e0d\u540c\u7528\u6237\n\u8be5\u4fe1\u7684\u4e13\u5bb6\u4e0d\u540c\u3002MOE \u628a\"\u6311\u4e13\u5bb6\"\u505a\u6210\u4f9d\u8d56\u8f93\u5165\u7684\u53ef\u5b66\u4e60\u8def\u7531\u3002\n\u2461 \u516c\u5f0f\n  r\u0302_ui = \u03a3_k \u03c0_k(x_ui; \u03b8) \u00b7 r\u0302_ui^{(k)} ,  \u03a3_k \u03c0_k = 1\n  \u03c0 = softmax( W\u2082\u00b7ReLU(W\u2081x + b\u2081) + b\u2082 )\nx_ui: (u,i) \u4e0a\u4e0b\u6587\u7279\u5f81; \u03c0_k: \u7b2c k \u4e2a\u4e13\u5bb6\u7684 softmax \u6743\u91cd;\nr\u0302^{(k)}: \u7b2c k \u4e2a\u4e13\u5bb6\u9884\u6d4b\u3002\u4e13\u5bb6\u53c2\u6570\u56fa\u5b9a, \u53ea\u8bad\u7ec3 gating\u3002\n\u2462 \u4e0e Stacking \u7684\u5173\u952e\u533a\u522b\nStacking = \u5168\u5c40\u56fa\u5b9a\u6743\u91cd; MOE = \u6309\u6837\u672c\u52a8\u6001\u6743\u91cd (\u8f6f\u8def\u7531)\u3002\n\u2463 Router \u8f93\u5165\u7279\u5f81\n\u7528\u6237\u8bc4\u5206\u6570/\u5747\u503c/\u65b9\u5dee\u3001\u7535\u5f71\u70ed\u5ea6\u3001\u51b7\u542f\u52a8\u6807\u5fd7\u3001\u7a00\u6709genre\u6807\u5fd7\u3001\n\u5f02\u5e38\u7528\u6237\u7c07 one-hot \u2192 \u8ba9\u8def\u7531\"\u77e5\u9053\"\u5f53\u524d\u6837\u672c\u5c5e\u4e8e\u54ea\u79cd\u573a\u666f\u3002"
+      },
+      {
+        "type": "text",
+        "content": "\u2464\u2465 MOE \u8def\u7531\u6743\u91cd & \u7ed3\u8bba\nMOE \u5f00\u653e MSE = 0.7143 (4 experts: M3/M2+/M6/M7)\nCold movie (<20): M3=0.999 M2+=0.0 M6=0.0 M7=0.0\nRare genre: M3=0.998 M2+=0.0 M6=0.002 M7=0.0\nHot (>2000): M3=0.999 M2+=0.0 M6=0.001 M7=0.0\nM3/M6 \u8bad\u7ec3\u5145\u5206\u540e\u5168\u9762\u5360\u4f18, router \u6536\u655b\u5230\u51e0\u4e4e\u53ea\u7528 M3(\u22480.99),\n\u6545 MOE\u2248M3 \u2014 \u5f53\u67d0\u4e13\u5bb6\u5168\u9762\u66f4\u4f18\u65f6, \u52a8\u6001\u8def\u7531\u4f1a\u81ea\u52a8\u5f52\u4e00\u5230\u5b83\u3002"
+      }
+    ],
+    "images": [
+      {
+        "path": "assets/slide9_img1.png",
+        "width": 5577840,
+        "height": 2193638
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "number": 10,
+    "title": "",
+    "content": [
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "3.1   BERT/MiniLM + \u5fae\u8c03\u5c42 \u2192 \u7535\u5f71\u7c7b\u578b\u9884\u6d4b"
+      },
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "\u2460 \u95ee\u9898\u52a8\u673a\n\u671f\u4e2d\u7528 TF-IDF \u8bcd\u888b, \u4e22\u4e86\u8bcd\u5e8f\u4e0e\u4e0a\u4e0b\u6587\u8bed\u4e49 (\u5982\u53cd\u8bbd)\u3002\u6539\u7528\u9884\u8bad\u7ec3\ntransformer \u7684\u8bed\u4e49\u8868\u793a\u6765\u505a\u591a\u6807\u7b7e\u7c7b\u578b\u9884\u6d4b\u3002\n\u2461 \u6838\u5fc3\u601d\u60f3 (frozen encoder + \u6d45\u5934)\n\u51bb\u7ed3 MiniLM-L6 (22M, 6\u5c42) \u62bd 384\u7ef4\u53e5\u5411\u91cf, \u53ea\u8bad\u7ec3\u4e00\u4e2a\u5206\u7c7b\u5934\u3002\n\u6570\u636e\u4ec5 ~2k \u90e8\u7535\u5f71, \u5168\u5fae\u8c03\u6613\u8fc7\u62df\u5408, \u6d45\u5934\u8db3\u591f\u4e14\u5feb\u3002\n\u2462 \u516c\u5f0f\n  z_i = MiniLM(intro_i) \u2208 \u211d\u00b3\u2078\u2074\n  F(\u7ebf\u6027): \u0177 = \u03c3(W z_i + b)\n  G(MLP) : \u0177 = \u03c3(W\u2082\u00b7ReLU(W\u2081 z_i) + b)\n\u03c3: sigmoid(\u9010 genre \u72ec\u7acb 0/1); \u635f\u5931 BCEWithLogitsLoss\u3002\n\u2463 \u8bc4\u6d4b\u6307\u6807 (\u591a\u6807\u7b7e)\nHamming loss\u3001Jaccard\u3001F1-macro\u3001F1-samples\u3001Subset accuracy"
+      },
+      {
+        "type": "text",
+        "content": "\u2464\u2465 \u7ed3\u679c\u4e0e\u7ed3\u8bba\nB LR-OVR: F1s=0.4751 Jacc=0.3758 F1m=0.2616\nF MiniLM+Linear: F1s=0.5054 Jacc=0.4007 F1m=0.3009\nG MiniLM+MLP: F1s=0.5599 Jacc=0.4501 F1m=0.3915\nMLP \u5934 > \u7ebf\u6027\u5934 > TF-IDF \u57fa\u7ebf; \u8bed\u4e49\u8868\u793a\u5e26\u6765\u7a33\u5b9a\u63d0\u5347\u3002\n\u671f\u4e2d TF-IDF (A/B/C) \u4ec5\u4f5c\u5bf9\u7167, \u4e0d\u5c55\u5f00\u3002"
+      }
+    ],
+    "images": [
+      {
+        "path": "assets/slide10_img1.png",
+        "width": 5577840,
+        "height": 2497235
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "number": 11,
+    "title": "",
+    "content": [
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "3.2   \u4e3b\u9898\u7535\u5f71\u7c7b \u00d7 \u5e74\u9f84\u76f8\u5173\u6027\u5efa\u6a21"
+      },
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "\u2460 \u95ee\u9898\u52a8\u673a\ngenre \u662f\u7ed9\u5b9a\u79bb\u6563\u6807\u7b7e; \u8fd9\u91cc\u7528\u65e0\u76d1\u7763\u4e3b\u9898\u6a21\u578b\u4ece intro \u91cd\u65b0\u62bd\"\u8bed\u4e49\u4e3b\u9898\",\n\u7814\u7a76\u54ea\u4e9b\u4e3b\u9898\u7684\u504f\u597d\u968f\u5e74\u9f84\u663e\u8457\u53d8\u5316\u3002\n\u2461 \u516c\u5f0f\n  LDA: \u7535\u5f71 d \u7684\u4e3b\u9898\u5206\u5e03 \u03c0_d \u2208 \u0394^{K-1}\n  \u533a\u5206\u5ea6: discrim_k = (1/|Age|) \u03a3_a (r\u0304_ka \u2212 r\u0304_k)\u00b2\n\u03c0_dk: \u7535\u5f71 d \u5c5e\u4e3b\u9898 k \u7684\u6982\u7387; r\u0304_ka: \u5e74\u9f84\u6bb5 a \u5bf9\u4e3b\u9898 k \u7684\n\u52a0\u6743\u5e73\u5747\u8bc4\u5206\u3002\u6309 discrim_k \u81ea\u52a8\u6311\u6700\u5177\u5e74\u9f84\u533a\u5206\u5ea6\u7684 3 \u4e2a\u4e3b\u9898\u3002\n\u2462 \u5b9e\u73b0\u6b65\u9aa4\nStep1 LDA(K=6) \u62bd\u4e3b\u9898 \u2192 Step2 \u9009 top3 \u533a\u5206\u5ea6\u4e3b\u9898\nStep3 \u4e3b\u9898\u00d7\u5e74\u9f84 \u70ed\u56fe/\u6298\u7ebf \u2192 Step4 \u4ea4\u4e92\u9879 OLS \u663e\u8457\u6027"
+      },
+      {
+        "type": "text",
+        "content": "\u2463\u2464\u2465 Top \u5e74\u9f84\u654f\u611f\u4e3b\u9898 & \u7ed3\u8bba\nt1: love, man, falls, woman, young\nt2: war, world, ii, group, evil\nt5: new, life, york, new york, city\n\u5404\u4e3b\u9898\u5e73\u5747\u5206\u90fd\u968f\u5e74\u9f84\u5347\u9ad8 \u2192 \u5e74\u957f\u7528\u6237\u6574\u4f53\u6253\u5206\u66f4\u5bbd\u5bb9;\n\u6218\u4e89/\u5386\u53f2\u4e3b\u9898\u7684\u5e74\u9f84\u68af\u5ea6\u6700\u9661, \u90fd\u5e02/\u7231\u60c5\u4e3b\u9898\u76f8\u5bf9\u5e73\u7f13\u3002"
+      }
+    ],
+    "images": [
+      {
+        "path": "assets/slide11_img1.png",
+        "width": 6035040,
+        "height": 1972942
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "number": 12,
+    "title": "",
+    "content": [
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "3.3   LLM Embedding (text-embedding-3-small) + \u5fae\u8c03"
+      },
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "\u2460 \u95ee\u9898\u52a8\u673a\n3.1 \u7528\u901a\u7528\u5c0f\u6a21\u578b MiniLM(384\u7ef4); \u8fd9\u91cc\u6362\u6210\u5927\u6a21\u578b\u53e5\u5d4c\u5165(1536\u7ef4),\n\u8bed\u6599\u66f4\u5e7f\u3001\u8bed\u4e49\u66f4\u4e30\u5bcc, \u770b\u80fd\u5426\u8fdb\u4e00\u6b65\u63d0\u5347\u3002\n\u2461 \u6838\u5fc3\u601d\u60f3 + \u516c\u5f0f\n  z_i^{LLM} = Embedding_API(intro_i) \u2208 \u211d\u00b9\u2075\u00b3\u2076\n  H: \u0177 = \u03c3( MLP\u2082\u2085\u2086(z_i^{LLM}) )\n\u5728 1536\u7ef4\u5d4c\u5165\u4e0a\u52a0 1 \u4e2a 256 \u9690\u5c42 MLP \u5934; \u7ef4\u5ea6\u9ad8 \u2192 \u7528\nDropout=0.4 + weight decay \u6291\u5236\u8fc7\u62df\u5408\u3002\n\u2462 \u5b9e\u73b0\u6b65\u9aa4\nStep1 yunwu.ai /v1/embeddings \u62c9\u5d4c\u5165(\u7f13\u5b58+fallback)\nStep2 \u8bad\u7ec3 MLP-256 \u5934 \u2192 Step3 \u81ea\u9002\u5e94\u9608\u503c \u2192 Step4 \u5bf9\u6bd4 3.1\n\u2463 \u8bc4\u6d4b\n\u4e0e F/G \u540c\u4e00 train/val/test \u5212\u5206\u3001\u540c\u7ec4\u591a\u6807\u7b7e\u6307\u6807\u6a2a\u5411\u5bf9\u6bd4\u3002"
+      },
+      {
+        "type": "text",
+        "content": "\u2464\u2465 \u7ed3\u679c\u4e0e\u7ed3\u8bba\nG MiniLM+MLP: F1s=0.5599 Jacc=0.4501 Hamming=0.0764\nH LLM-emb+MLP: F1s=0.6347 Jacc=0.5225 Hamming=0.0673\nH (LLM 1536\u7ef4 + MLP-256) \u5728\u6240\u6709\u6307\u6807\u4e0a\u6700\u4f18;\n\u9ad8\u7ef4\u8bed\u4e49\u5d4c\u5165 + \u9002\u5f53\u6b63\u5219, \u6bd4 MiniLM \u8fdb\u4e00\u6b65\u63d0\u5347\u7c7b\u578b\u9884\u6d4b\u3002"
+      }
+    ],
+    "images": [
+      {
+        "path": "assets/slide12_img1.png",
+        "width": 5577840,
+        "height": 2287383
+      }
+    ],
+    "notes": ""
+  },
+  {
+    "number": 13,
+    "title": "",
+    "content": [
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "\u53cd\u601d   \u4e3a\u4ec0\u4e48\u65b0\u589e\u4fe1\u606f\u5bf9\u5168\u91cf MSE \u63d0\u5347\u6709\u9650? \u66f4\u4f18\u65b9\u5411\u5728\u54ea?"
+      },
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "\u8bca\u65ad (\u4e09\u4e2a\u6839\u56e0, \u6709\u6570\u636e\u652f\u6491)\n\u2460 \u65b0\u589e\u4fe1\u606f\u4e0e\u534f\u540c\u9ad8\u5ea6\u5197\u4f59\nM3 \u4e0e M6(\u6d77\u62a5)\u9884\u6d4b\u76f8\u5173\u6027 0.98 \u2192 \u89c6\u89c9\u51e0\u4e4e\u6ca1\u52a0\u65b0\u4e1c\u897f;\n\u51b7\u95e8\u7535\u5f71\u4ec5\u5360\u6d4b\u8bd5 0.6%\u3001\u51b7\u7528\u6237 0% \u2014\u2014 side-info\n\u53ea\u5728\u8fd9\u4e9b\u7a00\u758f\u6837\u672c\u6709\u7528, \u52a0\u6743\u5230\u5168\u91cf\u88ab\u4e25\u91cd\u7a00\u91ca\u3002\n\u2461 \u8bef\u5dee\u5df2\u63a5\u8fd1\u4e0d\u53ef\u7ea6\u566a\u58f0\u5730\u677f\n\u540c\u4e00\u7528\u6237\u5bf9\u540c\u7c7b\u7247\u8bc4\u5206\u6ce2\u52a8\u5927; \u8bad\u7ec3\u597d\u7684 M3=0.714 \u5df2\u8fd1\u8be5\u6570\u636e\u6781\u9650\u3002\n\u2462 \u96c6\u6210 / \u540e\u5904\u7406\u5929\u7136\u589e\u76ca\u5c0f\nM2+/M7 \u88ab M3 \u538b\u5236; \u5168\u5c40 Stacking=0.7386 \u53cd\u800c > M3; \u5f02\u5e38\u7528\u6237\u540e\u5904\u7406\u6301\u5e73\u3002\n\u5173\u952e\u53d1\u73b0: \u4e3b\u74f6\u9888\u662f\u57fa\u5ea7\u662f\u5426\u8bad\u7ec3\u5145\u5206, \u4e0d\u662f\u7f3a\u4fe1\u606f\u3002"
+      },
+      {
+        "type": "text",
+        "content": "\u66f4\u80fd\u63d0\u5347\u51c6\u786e\u7387\u7684\u65b9\u5411 (\u6309\u9884\u671f\u6536\u76ca\u6392\u5e8f)\n\u2460 \u5148\u628a\u57fa\u5ea7 SVD \u8bad\u7ec3\u5145\u5206 (\u6700\u5927\u6760\u6746, \u672c\u6b21\u5df2\u63a5\u5165)\n\u539f\u5b9e\u73b0\u6bcf epoch \u4ec5\u91c7\u6837 ~32% \u6570\u636e \u2192 \u6b20\u62df\u5408; \u6539\u4e3a\u5168\u91cf\u5411\u91cf\u5316\u8bad\u7ec3:\n   M3 MSE 0.823 \u2192 0.714 (\u219313.2%); \u5f02\u5e38\u7528\u6237 1.69 \u2192 1.34\n   \u4e00\u4e3e\u8d85\u8fc7 \u6d77\u62a5/LLM/Stacking/MOE \u5168\u90e8\u53e0\u52a0(~1%)\u4e4b\u603b\u548c\u3002\n\u2461 \u5347\u7ea7\u77e9\u9635\u5206\u89e3\u6a21\u578b\nSVD++ (\u7eb3\u5165\"\u8bc4\u8fc7\u54ea\u4e9b\u7247\"\u7684\u9690\u5f0f\u53cd\u9988)\u3001timeSVD++ (\u504f\u7f6e\u968f\u65f6\u95f4\u6f02\u79fb)\u3002\n\u2462 \u8054\u5408\u5efa\u6a21\u800c\u975e\"\u6b8b\u5dee\u5916\u6302\"\n\u56e0\u5b50\u5206\u89e3\u673a FM/DeepFM \u628a\u6f5c\u56e0\u5b50+\u4eba\u53e3\u5b66+\u5185\u5bb9\u653e\u8fdb\u4e00\u4e2a\u6a21\u578b, \u76f4\u63a5\u5b66\n\u4ea4\u53c9\u9879(\u5982\"\u5b66\u751f\u00d7Comedy\"), \u6bd4 M2+\u6b8b\u5dee\u518d\u56de\u5f52\u66f4\u5145\u5206\u5229\u7528 side-info\u3002\n\u2463 \u96c6\u6210\u8981\"\u53bb\u76f8\u5173\"\n\u52a0\u5165 user/item-KNN \u7b49\u8bef\u5dee\u7ed3\u6784\u4e0d\u540c\u7684\u6a21\u578b, \u96c6\u6210\u624d\u6709\u771f\u589e\u76ca\u3002\n\u2464 \u6362\u8bc4\u6d4b\u76ee\u6807\n\u63a8\u8350\u771f\u6b63\u5728\u610f\u6392\u5e8f(NDCG/Recall@K), side-info \u5bf9\u6392\u5e8f\u5e2e\u52a9\u8fdc\u5927\u4e8e\u9010\u70b9 MSE\u3002"
+      }
+    ],
+    "images": [],
+    "notes": ""
+  },
+  {
+    "number": 14,
+    "title": "",
+    "content": [
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "\u603b\u7ed3   \u671f\u672b\u603b\u7ed3\u4e0e\u5173\u952e\u7ed3\u8bba"
+      },
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "\u8bc4\u5206\u9884\u6d4b (Part 2) \u5168\u91cf\u5f00\u653e MSE\nM3 FunkSVD (\u8bad\u7ec3\u5145\u5206)    0.7144  \u2190 \u6700\u4f73\u57fa\u5ea7\nM6 VisSVD (\u542b\u6d77\u62a5)       0.7184\nM7 LLM / \u5185\u5bb9\u6b8b\u5dee        0.8149\nStacking / SegBlend / MOE  0.7386 / 0.7132 / 0.7143\n\u7c7b\u578b\u9884\u6d4b (Part 3) F1-samples\nTF-IDF\u57fa\u7ebf \u2192 MiniLM+MLP \u2192 LLM-emb+MLP \u9010\u7ea7\u63d0\u5347,\n\u6700\u4f73 H (LLM-emb+MLP) \u2248 0.6347\n\u5f02\u5e38\u7528\u6237\n260 \u540d\u5f02\u5e38\u7528\u6237, \u5b66\u751f/\u6559\u80b2\u5de5\u4f5c\u8005\u5c45\u591a, Comedy/Romance \u504f\u597d;\n\u6700\u4f73\u4e13\u5bb6 M6 VisSVD, \u5207\u6362\u4e13\u5bb6\u6bd4\u7edf\u4e00\u6a21\u578b\u66f4\u5408\u7406\u3002"
+      },
+      {
+        "type": "text",
+        "content": "\u6838\u5fc3 Takeaways\n\u2460 Side-information \u53ea\u5728\u7a00\u758f\u533a\u57df(\u51b7\u95e8\u7535\u5f71/\u7a00\u6709\u9898\u6750/\u51b7\u7528\u6237)\u6709\u4ef7\u503c,\n   \u5168\u91cf\u6307\u6807\u63d0\u5347\u6709\u9650\u662f\u7ed3\u6784\u6027\u7684, \u4e0d\u662f\u65b9\u6cd5\u5199\u9519\u4e86\u3002\n\u2461 \u5f02\u5e38\u7528\u6237\u6709\u771f\u5b9e\u7684\u4eba\u7fa4\u7ed3\u6784(\u5b66\u751f/\u6559\u80b2\u5de5\u4f5c\u8005)\u4e0e\u9898\u6750\u504f\u597d(Comedy/\n   Romance), \u5e94\"\u8bc6\u522b + \u5206\u6d41\u5230\u5408\u9002\u4e13\u5bb6\", \u800c\u975e\u5168\u91cf\u786c\u8c03\u3002\n\u2462 MOE \u7684\u6309\u6837\u672c\u52a8\u6001\u8def\u7531\u6bd4 Stacking \u5168\u5c40\u6743\u91cd\u66f4\u8d34\u5408\u591a\u573a\u666f\u3002\n\u2463 \u7c7b\u578b\u9884\u6d4b: \u8bed\u4e49\u5d4c\u5165(\u5c24\u5176 LLM \u9ad8\u7ef4) + \u6d45\u5934\u662f\u5c0f\u6570\u636e\u591a\u6807\u7b7e\u6700\u4f73\u5b9e\u8df5\u3002\n\u2464 LLM \u9002\u5408\"\u4e00\u6b21\u5d4c\u5165\u957f\u671f\u590d\u7528\", \u800c\u975e\u6bcf\u6b21\u63a8\u7406\u5728\u7ebf\u8c03\u7528\u3002\n\u2465 \u5df2\u9a8c\u8bc1: \u8bad\u7ec3\u5145\u5206\u7684\u57fa\u5ea7 SVD \u628a M3 0.82\u21920.71, \u8fdc\u8d85\u6240\u6709 side-info \u53e0\u52a0\u3002"
+      }
+    ],
+    "images": [],
+    "notes": ""
+  },
+  {
+    "number": 15,
+    "title": "",
+    "content": [
+      {
+        "type": "text",
+        "content": ""
+      },
+      {
+        "type": "text",
+        "content": "\u8c22\u8c22\uff01"
+      },
+      {
+        "type": "text",
+        "content": "\u848b\u540d\u4eea   2500010771"
+      }
+    ],
+    "images": [],
+    "notes": ""
+  }
+]

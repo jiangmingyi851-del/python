@@ -1,0 +1,797 @@
+{
+  "M3_MSE": 0.7144,
+  "M2plus_MSE": 0.8297,
+  "M2_MSE": 0.8303,
+  "M5_VisKNN_MSE": 1.3373,
+  "M6_VisSVD_MSE": 0.7184,
+  "cold_movie_rmse": [
+    {
+      "bucket": "<20",
+      "n": 299,
+      "M3": 0.9795169878229076,
+      "VisKNN": 1.2210508830248938,
+      "VisSVD": 0.9794027086558278
+    },
+    {
+      "bucket": "20-100",
+      "n": 2863,
+      "M3": 0.8920981935152204,
+      "VisKNN": 1.2125427518770413,
+      "VisSVD": 0.8878390346422149
+    },
+    {
+      "bucket": "100-500",
+      "n": 18034,
+      "M3": 0.8572011192675106,
+      "VisKNN": 1.1746727297288375,
+      "VisSVD": 0.8574518480178036
+    },
+    {
+      "bucket": "500-2000",
+      "n": 25240,
+      "M3": 0.8372832348270086,
+      "VisKNN": 1.1240900821161588,
+      "VisSVD": 0.8412476217749485
+    },
+    {
+      "bucket": ">2000",
+      "n": 3572,
+      "M3": 0.7859632796718262,
+      "VisKNN": 1.234313688600134,
+      "VisSVD": 0.7945185761158646
+    }
+  ],
+  "M7_LLM_MSE": 0.8149,
+  "M7_model": "LightGBM residual",
+  "M7_top_features": {
+    "M2_pred": 51419.7,
+    "occ_id": 12950.5,
+    "age": 12942.4,
+    "c0": 12913.5,
+    "c1": 10745.3,
+    "c4": 10353.7,
+    "c7": 9794.0,
+    "c3": 9459.1,
+    "c6": 9251.8,
+    "c2": 9006.3
+  },
+  "segment_mse": [
+    {
+      "segment": "Cold movie (<20)",
+      "n": 281,
+      "M3 FunkSVD": 0.9719,
+      "M2+": 1.2202,
+      "M6 VisSVD": 0.9652,
+      "M7 LLM": 1.165
+    },
+    {
+      "segment": "Rare genre",
+      "n": 2341,
+      "M3 FunkSVD": 0.6638,
+      "M2+": 0.7552,
+      "M6 VisSVD": 0.6661,
+      "M7 LLM": 0.7445
+    },
+    {
+      "segment": "Hot (>2000)",
+      "n": 3572,
+      "M3 FunkSVD": 0.6177,
+      "M2+": 0.7472,
+      "M6 VisSVD": 0.6313,
+      "M7 LLM": 0.7345
+    }
+  ],
+  "optimization_analysis": {
+    "pred_correlation": {
+      "M3-M2+": 0.901,
+      "M3-M6": 0.98,
+      "M3-M7": 0.907,
+      "M2+-M6": 0.918,
+      "M2+-M7": 0.991,
+      "M6-M7": 0.924
+    },
+    "mean_pred_correlation": 0.937,
+    "single_model_mse_spread": 0.1153,
+    "test_fraction": {
+      "cold_user_lt10": 0.0,
+      "cold_movie_lt20": 0.006,
+      "rare_genre": 0.047,
+      "hot_gt2000": 0.071
+    }
+  },
+  "stack_weights": {
+    "M3": 1.86,
+    "M2+": -0.849,
+    "M6": -0.277,
+    "M7": 0.282
+  },
+  "Stack_MSE": 0.7386,
+  "SegmentBlend_MSE": 0.7132,
+  "segment_blend_weights": {
+    "GLOBAL": {
+      "M3": 0.912,
+      "M2+": 0.0,
+      "M6": 0.088,
+      "M7": 0.0
+    },
+    "Cold movie (<20)": {
+      "M3": 0.992,
+      "M2+": 0.0,
+      "M6": 0.008,
+      "M7": 0.0
+    },
+    "Rare genre": {
+      "M3": 0.889,
+      "M2+": 0.0,
+      "M6": 0.11,
+      "M7": 0.0
+    },
+    "Hot (>2000)": {
+      "M3": 0.788,
+      "M2+": 0.0,
+      "M6": 0.211,
+      "M7": 0.001
+    }
+  },
+  "segment_blend_val_mse": {
+    "GLOBAL": {
+      "M3": 0.5656,
+      "M2+": 0.819,
+      "M6": 0.624,
+      "M7": 0.7944
+    },
+    "Cold movie (<20)": {
+      "M3": 0.469,
+      "M2+": 1.1183,
+      "M6": 0.5908,
+      "M7": 0.9972
+    },
+    "Rare genre": {
+      "M3": 0.5327,
+      "M2+": 0.7481,
+      "M6": 0.5849,
+      "M7": 0.7328
+    },
+    "Hot (>2000)": {
+      "M3": 0.5043,
+      "M2+": 0.7031,
+      "M6": 0.5371,
+      "M7": 0.6832
+    }
+  },
+  "abnormal_rate": 4.57,
+  "abnormal_users": 260,
+  "abnormal_clusters": [
+    {
+      "cluster": 0,
+      "n": 50,
+      "mae": 0.83,
+      "mean_rate": 3.55,
+      "std_rate": 1.31,
+      "pct_high": 0.57,
+      "pct_low": 0.23,
+      "genre_entropy": 2.42,
+      "mean_year": 1978.1,
+      "top_age": "35-44",
+      "age_dist": {
+        "35-44": 0.26,
+        "18-24": 0.18,
+        "25-34": 0.16,
+        "45-49": 0.16,
+        "50-55": 0.1,
+        "56+": 0.08,
+        "Under 18": 0.06
+      },
+      "top_occ": "academic/educator",
+      "occ_top3": {
+        "academic/educator": 0.14,
+        "artist": 0.14,
+        "other or not specified": 0.1
+      },
+      "edu_share": 0.24,
+      "top3_genres": [
+        "Drama",
+        "Comedy",
+        "Action"
+      ],
+      "top3_genre_share": {
+        "Drama": 0.17,
+        "Comedy": 0.166,
+        "Action": 0.093
+      },
+      "label": "中庸高残差型"
+    },
+    {
+      "cluster": 1,
+      "n": 91,
+      "mae": 0.863,
+      "mean_rate": 3.37,
+      "std_rate": 1.39,
+      "pct_high": 0.52,
+      "pct_low": 0.28,
+      "genre_entropy": 2.19,
+      "mean_year": 1990.4,
+      "top_age": "25-34",
+      "age_dist": {
+        "25-34": 0.341,
+        "18-24": 0.319,
+        "35-44": 0.11,
+        "Under 18": 0.099,
+        "50-55": 0.055,
+        "45-49": 0.055,
+        "56+": 0.022
+      },
+      "top_occ": "college/grad student",
+      "occ_top3": {
+        "college/grad student": 0.154,
+        "other or not specified": 0.154,
+        "academic/educator": 0.088
+      },
+      "edu_share": 0.297,
+      "top3_genres": [
+        "Comedy",
+        "Drama",
+        "Action"
+      ],
+      "top3_genre_share": {
+        "Comedy": 0.181,
+        "Drama": 0.174,
+        "Action": 0.115
+      },
+      "label": "中庸高残差型"
+    },
+    {
+      "cluster": 2,
+      "n": 57,
+      "mae": 0.857,
+      "mean_rate": 2.81,
+      "std_rate": 1.41,
+      "pct_high": 0.35,
+      "pct_low": 0.44,
+      "genre_entropy": 2.27,
+      "mean_year": 1990.3,
+      "top_age": "25-34",
+      "age_dist": {
+        "25-34": 0.333,
+        "18-24": 0.281,
+        "35-44": 0.175,
+        "Under 18": 0.088,
+        "50-55": 0.07,
+        "45-49": 0.035,
+        "56+": 0.018
+      },
+      "top_occ": "college/grad student",
+      "occ_top3": {
+        "college/grad student": 0.246,
+        "K-12 student": 0.123,
+        "executive/managerial": 0.105
+      },
+      "edu_share": 0.456,
+      "top3_genres": [
+        "Comedy",
+        "Action",
+        "Drama"
+      ],
+      "top3_genre_share": {
+        "Comedy": 0.183,
+        "Action": 0.146,
+        "Drama": 0.122
+      },
+      "label": "低分严苛型"
+    },
+    {
+      "cluster": 3,
+      "n": 62,
+      "mae": 0.828,
+      "mean_rate": 3.79,
+      "std_rate": 1.26,
+      "pct_high": 0.64,
+      "pct_low": 0.18,
+      "genre_entropy": 2.08,
+      "mean_year": 1987.8,
+      "top_age": "25-34",
+      "age_dist": {
+        "25-34": 0.306,
+        "18-24": 0.242,
+        "35-44": 0.194,
+        "45-49": 0.113,
+        "Under 18": 0.065,
+        "56+": 0.048,
+        "50-55": 0.032
+      },
+      "top_occ": "college/grad student",
+      "occ_top3": {
+        "college/grad student": 0.177,
+        "executive/managerial": 0.145,
+        "sales/marketing": 0.145
+      },
+      "edu_share": 0.306,
+      "top3_genres": [
+        "Comedy",
+        "Drama",
+        "Action"
+      ],
+      "top3_genre_share": {
+        "Comedy": 0.216,
+        "Drama": 0.171,
+        "Action": 0.11
+      },
+      "label": "高分宽松型"
+    }
+  ],
+  "abnormal_user_examples": [
+    {
+      "user_id": 4683,
+      "cluster": 2,
+      "mean_abs_err": 1.145,
+      "n_ratings": 61,
+      "mean_rate": 2.803,
+      "std_rate": 1.631,
+      "pct_high": 0.377,
+      "pct_low": 0.459,
+      "age_desc": "25-34",
+      "occ_desc": "other or not specified"
+    },
+    {
+      "user_id": 5901,
+      "cluster": 1,
+      "mean_abs_err": 1.138,
+      "n_ratings": 30,
+      "mean_rate": 3.2,
+      "std_rate": 1.606,
+      "pct_high": 0.5,
+      "pct_low": 0.333,
+      "age_desc": "35-44",
+      "occ_desc": "executive/managerial"
+    },
+    {
+      "user_id": 5328,
+      "cluster": 1,
+      "mean_abs_err": 1.106,
+      "n_ratings": 51,
+      "mean_rate": 3.706,
+      "std_rate": 1.758,
+      "pct_high": 0.706,
+      "pct_low": 0.294,
+      "age_desc": "25-34",
+      "occ_desc": "college/grad student"
+    },
+    {
+      "user_id": 4638,
+      "cluster": 2,
+      "mean_abs_err": 1.068,
+      "n_ratings": 34,
+      "mean_rate": 2.912,
+      "std_rate": 1.485,
+      "pct_high": 0.382,
+      "pct_low": 0.441,
+      "age_desc": "25-34",
+      "occ_desc": "college/grad student"
+    },
+    {
+      "user_id": 4676,
+      "cluster": 1,
+      "mean_abs_err": 1.053,
+      "n_ratings": 30,
+      "mean_rate": 3.7,
+      "std_rate": 1.466,
+      "pct_high": 0.633,
+      "pct_low": 0.333,
+      "age_desc": "45-49",
+      "occ_desc": "sales/marketing"
+    },
+    {
+      "user_id": 5241,
+      "cluster": 1,
+      "mean_abs_err": 1.037,
+      "n_ratings": 89,
+      "mean_rate": 3.427,
+      "std_rate": 1.651,
+      "pct_high": 0.551,
+      "pct_low": 0.303,
+      "age_desc": "25-34",
+      "occ_desc": "college/grad student"
+    },
+    {
+      "user_id": 467,
+      "cluster": 1,
+      "mean_abs_err": 1.034,
+      "n_ratings": 65,
+      "mean_rate": 3.262,
+      "std_rate": 1.439,
+      "pct_high": 0.446,
+      "pct_low": 0.277,
+      "age_desc": "35-44",
+      "occ_desc": "clerical/admin"
+    },
+    {
+      "user_id": 1035,
+      "cluster": 1,
+      "mean_abs_err": 1.03,
+      "n_ratings": 87,
+      "mean_rate": 3.782,
+      "std_rate": 1.505,
+      "pct_high": 0.621,
+      "pct_low": 0.23,
+      "age_desc": "18-24",
+      "occ_desc": "artist"
+    },
+    {
+      "user_id": 5760,
+      "cluster": 1,
+      "mean_abs_err": 1.023,
+      "n_ratings": 30,
+      "mean_rate": 3.4,
+      "std_rate": 1.522,
+      "pct_high": 0.567,
+      "pct_low": 0.333,
+      "age_desc": "18-24",
+      "occ_desc": "programmer"
+    },
+    {
+      "user_id": 5214,
+      "cluster": 2,
+      "mean_abs_err": 1.019,
+      "n_ratings": 31,
+      "mean_rate": 2.419,
+      "std_rate": 1.501,
+      "pct_high": 0.323,
+      "pct_low": 0.548,
+      "age_desc": "35-44",
+      "occ_desc": "homemaker"
+    },
+    {
+      "user_id": 4023,
+      "cluster": 0,
+      "mean_abs_err": 0.999,
+      "n_ratings": 83,
+      "mean_rate": 3.12,
+      "std_rate": 1.374,
+      "pct_high": 0.41,
+      "pct_low": 0.349,
+      "age_desc": "35-44",
+      "occ_desc": "homemaker"
+    },
+    {
+      "user_id": 4936,
+      "cluster": 3,
+      "mean_abs_err": 0.988,
+      "n_ratings": 38,
+      "mean_rate": 3.974,
+      "std_rate": 1.442,
+      "pct_high": 0.711,
+      "pct_low": 0.211,
+      "age_desc": "18-24",
+      "occ_desc": "college/grad student"
+    }
+  ],
+  "abnormal_user_count": 260,
+  "abnormal_user_occupation_dist": {
+    "college/grad student": 0.165,
+    "other or not specified": 0.119,
+    "executive/managerial": 0.1,
+    "academic/educator": 0.092,
+    "artist": 0.069,
+    "sales/marketing": 0.069,
+    "K-12 student": 0.065,
+    "technician/engineer": 0.054,
+    "programmer": 0.046,
+    "doctor/health care": 0.042,
+    "writer": 0.042,
+    "homemaker": 0.035,
+    "clerical/admin": 0.023,
+    "self-employed": 0.019,
+    "unemployed": 0.015,
+    "customer service": 0.012,
+    "lawyer": 0.012,
+    "tradesman/craftsman": 0.008,
+    "retired": 0.008,
+    "scientist": 0.004
+  },
+  "abnormal_user_age_dist": {
+    "25-34": 0.296,
+    "18-24": 0.265,
+    "35-44": 0.173,
+    "45-49": 0.085,
+    "Under 18": 0.081,
+    "50-55": 0.062,
+    "56+": 0.038
+  },
+  "abnormal_user_genre_dist": {
+    "Comedy": 0.183,
+    "Drama": 0.156,
+    "Action": 0.119,
+    "Thriller": 0.085,
+    "Sci-Fi": 0.077,
+    "Romance": 0.072,
+    "Adventure": 0.065,
+    "Children's": 0.045,
+    "Horror": 0.035,
+    "Crime": 0.033,
+    "War": 0.029,
+    "Animation": 0.025,
+    "Musical": 0.023,
+    "Fantasy": 0.018,
+    "Mystery": 0.018,
+    "Western": 0.008,
+    "Film-Noir": 0.007,
+    "Documentary": 0.003
+  },
+  "abnormal_user_top_genres": [
+    "Comedy",
+    "Drama",
+    "Action",
+    "Thriller",
+    "Sci-Fi",
+    "Romance"
+  ],
+  "abnormal_user_student_educator_share": 0.323,
+  "all_user_student_educator_share": 0.245,
+  "abnormal_expert_switch": {
+    "n_abnormal_test": 1882,
+    "n_normal_test": 48132,
+    "table": [
+      {
+        "model": "M3 FunkSVD",
+        "abnormal_mse": 1.3456,
+        "normal_mse": 0.6897,
+        "gap": 0.6559
+      },
+      {
+        "model": "M2+ 分层偏置",
+        "abnormal_mse": 1.5098,
+        "normal_mse": 0.8031,
+        "gap": 0.7067
+      },
+      {
+        "model": "M6 VisSVD",
+        "abnormal_mse": 1.3418,
+        "normal_mse": 0.694,
+        "gap": 0.6477
+      },
+      {
+        "model": "M7 LLM/Content",
+        "abnormal_mse": 1.4895,
+        "normal_mse": 0.7885,
+        "gap": 0.701
+      }
+    ],
+    "best_model": "M6 VisSVD"
+  },
+  "abnormal_user_summary": "异常用户共 260 人 (评分数≥30 的用户中, M3 残差平均绝对值 Top 5%)。职业以 college/grad student(16%)、other or not specified(12%) 为主, 学生与教育工作者合计占 32% (全体仅 25%), 明显偏高; 年龄横跨 25-34、18-24、35-44 等多个区间, 并非单一 25-34; 题材偏好以 Comedy、Drama、Action、Thriller 为主——Comedy 在各簇均居首, Romance 在偏爱爱情片的簇中尤为突出。说明异常用户的偏差主要来自个人潜在口味, 潜因子 / 视觉协同模型 (M3、M6) 比人口学偏置 (M2+) 和内容残差 (M7) 更能拟合他们; 给这批用户切换到 M6 VisSVD 即可降低误差。",
+  "AbnormalAdaptive_MSE": 0.7133,
+  "abnormal_adaptive": {
+    "known_abnormal_test_ratings": 1882,
+    "alpha_fixed_item_user_bias": 0.0,
+    "alpha_cluster_expert_weight": 0.8,
+    "all_mse": 0.7133,
+    "abnormal_user_mse_before": 1.342,
+    "abnormal_user_mse_after": 1.3443,
+    "cluster_weights": {
+      "0": {
+        "label": "中庸高残差型",
+        "n_val": 900,
+        "weights": {
+          "M3": 0.989,
+          "M2+": 0.0,
+          "M6": 0.011,
+          "M7": 0.0
+        },
+        "val_mse": {
+          "M3": 0.9425,
+          "M2+": 1.443,
+          "M6": 1.1,
+          "M7": 1.4153
+        }
+      },
+      "1": {
+        "label": "中庸高残差型",
+        "n_val": 972,
+        "weights": {
+          "M3": 0.987,
+          "M2+": 0.0,
+          "M6": 0.013,
+          "M7": 0.0
+        },
+        "val_mse": {
+          "M3": 1.0813,
+          "M2+": 1.6735,
+          "M6": 1.232,
+          "M7": 1.649
+        }
+      },
+      "2": {
+        "label": "低分严苛型",
+        "n_val": 1062,
+        "weights": {
+          "M3": 0.99,
+          "M2+": 0.0,
+          "M6": 0.01,
+          "M7": 0.0
+        },
+        "val_mse": {
+          "M3": 1.0381,
+          "M2+": 1.646,
+          "M6": 1.1979,
+          "M7": 1.5789
+        }
+      },
+      "3": {
+        "label": "高分宽松型",
+        "n_val": 515,
+        "weights": {
+          "M3": 0.974,
+          "M2+": 0.0,
+          "M6": 0.026,
+          "M7": 0.0
+        },
+        "val_mse": {
+          "M3": 1.0271,
+          "M2+": 1.449,
+          "M6": 1.1539,
+          "M7": 1.4245
+        }
+      }
+    }
+  },
+  "MOE_MSE": 0.7143,
+  "moe_router": {
+    "Cold movie (<20)": {
+      "M3": 0.999,
+      "M2+": 0.0,
+      "M6": 0.0,
+      "M7": 0.0
+    },
+    "Rare genre": {
+      "M3": 0.998,
+      "M2+": 0.0,
+      "M6": 0.002,
+      "M7": 0.0
+    },
+    "Hot (>2000)": {
+      "M3": 0.999,
+      "M2+": 0.0,
+      "M6": 0.001,
+      "M7": 0.0
+    }
+  },
+  "genre_results": [
+    {
+      "model": "A NB-Bin",
+      "hamming": 0.0837,
+      "jaccard": 0.4016,
+      "f1_macro": 0.2749,
+      "f1_samples": 0.5085,
+      "subset_acc": 0.1047
+    },
+    {
+      "model": "B LR-OVR",
+      "hamming": 0.0816,
+      "jaccard": 0.3758,
+      "f1_macro": 0.2616,
+      "f1_samples": 0.4751,
+      "subset_acc": 0.1081
+    },
+    {
+      "model": "C SVM-OVR",
+      "hamming": 0.0845,
+      "jaccard": 0.3944,
+      "f1_macro": 0.3351,
+      "f1_samples": 0.5011,
+      "subset_acc": 0.1006
+    },
+    {
+      "model": "F MiniLM+Linear",
+      "hamming": 0.0796,
+      "jaccard": 0.4007,
+      "f1_macro": 0.3009,
+      "f1_samples": 0.5054,
+      "subset_acc": 0.1102
+    },
+    {
+      "model": "G MiniLM+MLP",
+      "hamming": 0.0764,
+      "jaccard": 0.4501,
+      "f1_macro": 0.3915,
+      "f1_samples": 0.5599,
+      "subset_acc": 0.1383
+    },
+    {
+      "model": "H LLM-emb+MLP",
+      "hamming": 0.0673,
+      "jaccard": 0.5225,
+      "f1_macro": 0.4817,
+      "f1_samples": 0.6347,
+      "subset_acc": 0.1862
+    },
+    {
+      "model": "I BERT-finetune",
+      "hamming": 0.0709,
+      "jaccard": 0.5012,
+      "f1_macro": 0.4213,
+      "f1_samples": 0.616,
+      "subset_acc": 0.1622
+    }
+  ],
+  "top3_topics": {
+    "t1": [
+      "love",
+      "man",
+      "falls",
+      "woman",
+      "young"
+    ],
+    "t2": [
+      "war",
+      "world",
+      "ii",
+      "group",
+      "evil"
+    ],
+    "t5": [
+      "new",
+      "life",
+      "york",
+      "new york",
+      "city"
+    ]
+  },
+  "theme_age_table": {
+    "t0": {
+      "Under 18": 3.575,
+      "18-24": 3.508,
+      "25-34": 3.545,
+      "35-44": 3.622,
+      "45-49": 3.634,
+      "50-55": 3.711,
+      "56+": 3.751
+    },
+    "t1": {
+      "Under 18": 3.562,
+      "18-24": 3.504,
+      "25-34": 3.539,
+      "35-44": 3.637,
+      "45-49": 3.663,
+      "50-55": 3.751,
+      "56+": 3.809
+    },
+    "t2": {
+      "Under 18": 3.554,
+      "18-24": 3.505,
+      "25-34": 3.519,
+      "35-44": 3.604,
+      "45-49": 3.635,
+      "50-55": 3.716,
+      "56+": 3.77
+    },
+    "t3": {
+      "Under 18": 3.581,
+      "18-24": 3.559,
+      "25-34": 3.599,
+      "35-44": 3.658,
+      "45-49": 3.675,
+      "50-55": 3.739,
+      "56+": 3.809
+    },
+    "t4": {
+      "Under 18": 3.513,
+      "18-24": 3.483,
+      "25-34": 3.528,
+      "35-44": 3.585,
+      "45-49": 3.608,
+      "50-55": 3.667,
+      "56+": 3.73
+    },
+    "t5": {
+      "Under 18": 3.552,
+      "18-24": 3.521,
+      "25-34": 3.57,
+      "35-44": 3.627,
+      "45-49": 3.654,
+      "50-55": 3.734,
+      "56+": 3.781
+    }
+  },
+  "llm_emb_model": "text-embedding-3-small",
+  "bert_finetune_model": "C:\\Users\\32698/.cache/hf_local/distilbert-base-uncased"
+}
